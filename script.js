@@ -16,7 +16,14 @@ let matchedCards = [];
 
 // Bord maken
 function createBoard() {
+  console.log("Bord wordt aangemaakt...");
   const board = document.getElementById("game-board");
+  
+  if (!board) {
+    console.error("FOUT: #game-board niet gevonden!");
+    return;
+  }
+
   const restartButton = document.getElementById("restart-btn");
   restartButton.classList.add("hidden");
 
@@ -34,6 +41,8 @@ function createBoard() {
     cardElement.addEventListener("click", () => flipCard(cardElement, card));
     board.appendChild(cardElement);
   });
+
+  console.log("Bord is succesvol aangemaakt!");
 }
 
 // Kaarten schudden
@@ -90,4 +99,5 @@ function checkMatch() {
 document.getElementById("restart-btn").addEventListener("click", createBoard);
 
 // Start spel
+console.log("Script geladen! Spel wordt gestart...");
 createBoard();
