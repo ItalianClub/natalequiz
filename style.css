@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #ebe5dc;
+  background-color: #e6ded0;
   color: #4d4d4d;
   text-align: center;
 }
@@ -44,7 +44,7 @@ p {
   width: 150px;
   height: 150px;
   cursor: pointer;
-  perspective: 1000px; /* 3D-perspectief */
+  perspective: 1000px;
 }
 
 .card-inner {
@@ -74,20 +74,23 @@ p {
 }
 
 .card-front {
-  background-color: #e6ded0;
+  background-color: #9c1925;
   border: 2px solid #9c1925;
-  color: #9c1925;
+  background-image: url('snowflake.png');
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .card-back {
-  background-color: #9c1925;
+  background-color: #2a9d8f;
   color: #fff;
   transform: rotateY(180deg);
 }
 
 .card.matched {
   pointer-events: none;
-  background-color: #2a9d8f; /* Groen als match gevonden */
+  background-color: #4caf50; /* Groen voor matches */
   color: #fff;
 }
 
