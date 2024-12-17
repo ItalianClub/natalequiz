@@ -1,117 +1,92 @@
-/* Algemene reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+const cards = [
+  { id: 1, content: "Santo Stefano - La Vigilia di Natale", type: "question" }, // 7
+  { id: 2, content: "7", type: "answer" },
+  { id: 3, content: "🎄 + 🧦", type: "question" }, // La mattina di Natale
+  { id: 4, content: "La mattina di Natale", type: "answer" },
+  { id: 5, content: "👵 + 🧹", type: "question" }, // La Befana
+  { id: 6, content: "La Befana", type: "answer" },
+  { id: 7, content: "Santo Stefano + La Befana", type: "question" }, // 32
+  { id: 8, content: "32", type: "answer" },
+  { id: 9, content: "Natale - Capodanno", type: "question" }, // 24
+  { id: 10, content: "24", type: "answer" },
+  { id: 11, content: "Compleanno del vostro insegnante", type: "question" }, // 3
+  { id: 12, content: "3", type: "answer" }
+];
+
+let flippedCards = [];
+let matchedCards = [];
+
+// Speelbord maken
+function createBoard() {
+  const board = document.getElementById("game-board");
+  board.innerHTML = "";
+  flippedCards = [];
+  matchedCards = [];
+
+  const shuffledCards = shuffle([...cards, ...cards]);
+  shuffledCards.forEach(card => createCard(board, card));
 }
 
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #e6ded0;
-  color: #4d4d4d;
-  text-align: center;
+function createCard(board, card) {
+  const cardElement = document.createElement("div");
+  cardElement.classList.add("card");
+
+  const inner = document.createElement("div");
+  inner.classList.add("card-inner");
+
+  const front = document.createElement("div");
+  front.classList.add("card-front");
+  const back = document.createElement("div");
+  back.classList.add("card-back");
+  back.textContent = card.content;
+
+  inner.appendChild(front);
+  inner.appendChild(back);
+  cardElement.appendChild(inner);
+
+  cardElement.addEventListener("click", () => flipCard(cardElement, card));
+  board.appendChild(cardElement);
 }
 
-header {
-  background-color: #e6ded0;
-  padding: 20px;
+function flipCard(cardElement, card) {
+  if (cardElement.classList.contains("flipped") || cardElement.classList.contains("matched") || flippedCards.length === 2) return;
+
+  cardElement.classList.add("flipped");
+  flippedCards.push({ cardElement, card });
+
+  if (flippedCards.length === 2) {
+    setTimeout(checkMatch, 1000);
+  }
 }
 
-.logo {
-  width: 150px;
+function checkMatch() {
+  const [card1, card2] = flippedCards;
+
+  if (card1.card.id === card2.card.id && card1.card.type !== card2.card.type) {
+    card1.cardElement.classList.add("matched");
+    card2.cardElement.classList.add("matched");
+  } else {
+    card1.cardElement.classList.remove("flipped");
+    card2.cardElement.classList.remove("flipped");
+  }
+
+  flippedCards = [];
+
+  if (document.querySelectorAll('.card:not(.matched)').length === 0) {
+    alert("🎉 Complimenti! Hai trovato tutte le coppie! 🎉");
+    document.getElementById("restart-btn").classList.remove("hidden");
+  }
 }
 
-h1 {
-  color: #9c1925;
-  font-size: 2.5em;
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
-p {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-}
+document.getElementById("restart-btn").addEventListener("click", createBoard);
 
-#game-board {
-  display: grid;
-  grid-template-columns: repeat(4, 150px);
-  grid-gap: 15px;
-  justify-content: center;
-  margin: 30px auto;
-}
-
-.card {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  cursor: pointer;
-  perspective: 1000px;
-}
-
-.card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
-}
-
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
-}
-
-.card-front,
-.card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.card-front {
-  background-color: #9c1925;
-  border: 2px solid #9c1925;
-  background-image: url('snowflake.png');
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.card-back {
-  background-color: #2a9d8f;
-  color: #fff;
-  transform: rotateY(180deg);
-}
-
-.card.matched {
-  pointer-events: none;
-  background-color: #4caf50; /* Groen voor matches */
-  color: #fff;
-}
-
-#restart-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  color: #fff;
-  background-color: #9c1925;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#restart-btn:hover {
-  background-color: #b71c1c;
-}
-
-footer {
-  background-color: #9c1925;
-  color: #e6ded0;
-  padding: 10px 0;
-}
+// Start het spel
+createBoard();
