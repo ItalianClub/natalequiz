@@ -1,9 +1,12 @@
 const cards = [
-  { id: 1, image: "kersticoon.png" },
-  { id: 2, image: "kersticoon2.png" }
+  { id: 1, content: "🎄 + 🧦", image: "kersticoon.png" }, // La mattina di Natale
+  { id: 2, content: "La mattina di Natale", image: "kersticoon2.png" },
+  { id: 3, content: "👵 + 🧹", image: "kersticoon.png" }, // La Befana
+  { id: 4, content: "La Befana", image: "kersticoon2.png" },
+  { id: 5, content: "🎆 + 🎇", image: "kersticoon.png" }, // Capodanno
+  { id: 6, content: "Capodanno", image: "kersticoon2.png" }
 ];
 
-let gameCards = [];
 let flippedCards = [];
 let matchedCards = [];
 
@@ -11,22 +14,16 @@ let matchedCards = [];
 function createBoard() {
   const board = document.getElementById("game-board");
   board.innerHTML = "";
-  gameCards = [];
+  flippedCards = [];
+  matchedCards = [];
 
-  // Kaarten verdelen: 10 van elk icoon
-  for (let i = 0; i < 10; i++) {
-    gameCards.push({ id: i, image: cards[0].image });
-    gameCards.push({ id: i + 10, image: cards[1].image });
-  }
-
-  const shuffledCards = shuffle(gameCards);
-  shuffledCards.forEach((card, index) => createCard(board, card, index));
+  const shuffledCards = shuffle([...cards, ...cards]); // Dubbele set kaarten
+  shuffledCards.forEach(card => createCard(board, card));
 }
 
-function createCard(board, card, index) {
+function createCard(board, card) {
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
-  cardElement.dataset.index = index;
 
   const inner = document.createElement("div");
   inner.classList.add("card-inner");
@@ -37,18 +34,18 @@ function createCard(board, card, index) {
 
   const back = document.createElement("div");
   back.classList.add("card-back");
-  back.textContent = "?";
+  back.textContent = card.content;
 
   inner.appendChild(front);
   inner.appendChild(back);
   cardElement.appendChild(inner);
-  board.appendChild(cardElement);
 
   cardElement.addEventListener("click", () => flipCard(cardElement, card));
+  board.appendChild(cardElement);
 }
 
 function flipCard(cardElement, card) {
-  if (cardElement.classList.contains("flipped") || flippedCards.length === 2) return;
+  if (cardElement.classList.contains("flipped") || cardElement.classList.contains("matched") || flippedCards.length === 2) return;
 
   cardElement.classList.add("flipped");
   flippedCards.push({ cardElement, card });
@@ -61,7 +58,7 @@ function flipCard(cardElement, card) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (card1.card.image === card2.card.image) {
+  if (card1.card.content === card2.card.content) {
     card1.cardElement.classList.add("matched");
     card2.cardElement.classList.add("matched");
     matchedCards.push(card1, card2);
