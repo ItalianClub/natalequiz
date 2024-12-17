@@ -1,101 +1,57 @@
-console.log("Script geladen!"); // Controleer of script.js wordt geladen
-
-const questions = [
-  {
-    question: "Rebus: 🎄 + 🕯️ = ?",
-    options: ["Natale", "Capodanno", "La Befana", "San Silvestro"],
-    answer: "Natale"
-  },
-  {
-    question: "Somma: Natale (25) - Capodanno (1) = ?",
-    options: ["24", "26", "7", "31"],
-    answer: "24"
-  },
-  {
-    question: "Rebus: 👵 + 🧹 = ?",
-    options: ["Natale", "La Befana", "Santo Stefano", "La Vigilia di Natale"],
-    answer: "La Befana"
-  },
-  {
-    question: "Somma: San Silvestro (31) - La Vigilia di Natale (24) = ?",
-    options: ["6", "7", "5", "8"],
-    answer: "7"
-  }
+const cards = [
+  { id: 1, content: "San Silvestro - La Vigilia di Natale", type: "question" },
+  { id: 2, content: "7", type: "answer" },
+  { id: 3, content: "Natale - Capodanno", type: "question" },
+  { id: 4, content: "24", type: "answer" },
+  { id: 5, content: "Natale + Capodanno", type: "question" },
+  { id: 6, content: "26", type: "answer" },
+  { id: 7, content: "Santo Stefano + La Befana", type: "question" },
+  { id: 8, content: "32", type: "answer" }
 ];
 
-let currentQuestionIndex = 0;
-let score = 0;
+let flippedCards = [];
+let matchedCards = [];
 
-// HTML-elementen ophalen
-const questionElement = document.getElementById("question");
-const optionsElement = document.getElementById("options");
-const nextButton = document.getElementById("next-btn");
-const scoreContainer = document.getElementById("score-container");
-const scoreText = document.getElementById("score-text");
+// Bord maken
+function createBoard() {
+  const board = document.getElementById("game-board");
+  const shuffledCards = shuffle([...cards, ...cards]); // Verdubbel de kaarten
+  board.innerHTML = "";
 
-// Vraag laden
-function loadQuestion() {
-  resetState();
-  const currentQuestion = questions[currentQuestionIndex];
-  questionElement.textContent = currentQuestion.question;
+  shuffledCards.forEach(card => {
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("card");
+    cardElement.dataset.id = card.id;
+    cardElement.dataset.content = card.content;
+    cardElement.textContent = "?";
 
-  currentQuestion.options.forEach(option => {
-    const button = document.createElement("button");
-    button.textContent = option;
-    button.addEventListener("click", () => selectAnswer(button, option));
-    optionsElement.appendChild(button);
+    cardElement.addEventListener("click", () => flipCard(cardElement, card));
+    board.appendChild(cardElement);
   });
 }
 
-// Antwoord controleren
-function selectAnswer(button, option) {
-  const correctAnswer = questions[currentQuestionIndex].answer;
-
-  if (option === correctAnswer) {
-    button.style.backgroundColor = "#2a9d8f"; // Groen
-    score++;
-  } else {
-    button.style.backgroundColor = "#d62828"; // Rood
+// Kaarten schudden
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-
-  // Knoppen blokkeren
-  Array.from(optionsElement.children).forEach(btn => btn.disabled = true);
-  nextButton.classList.remove("hidden");
+  return array;
 }
 
-// Volgende vraag
-function nextQuestion() {
-  currentQuestionIndex++;
-  if (currentQuestionIndex < questions.length) {
-    loadQuestion();
-  } else {
-    showScore();
+// Kaart omdraaien
+function flipCard(cardElement, card) {
+  if (cardElement.classList.contains("flipped") || flippedCards.length === 2) return;
+
+  cardElement.classList.add("flipped");
+  cardElement.textContent = card.content;
+  flippedCards.push({ cardElement, card });
+
+  if (flippedCards.length === 2) {
+    setTimeout(checkMatch, 1000);
   }
 }
 
-// Quiz resetten
-function resetState() {
-  nextButton.classList.add("hidden");
-  optionsElement.innerHTML = "";
-}
-
-// Score weergeven
-function showScore() {
-  document.getElementById("quiz-container").classList.add("hidden");
-  scoreContainer.classList.remove("hidden");
-  scoreText.textContent = `Hai ottenuto ${score} su ${questions.length} punti!`;
-}
-
-// Quiz herstarten
-function restartQuiz() {
-  currentQuestionIndex = 0;
-  score = 0;
-  scoreContainer.classList.add("hidden");
-  document.getElementById("quiz-container").classList.remove("hidden");
-  loadQuestion();
-}
-
-nextButton.addEventListener("click", nextQuestion);
-
-// Start quiz bij paginaladen
-loadQuestion();
+// Controleer match
+function checkMatch() {
+  const [card1, card2] =
