@@ -1,53 +1,54 @@
 const cards = [
-  { id: 1, content: "🎄 + 🧦", type: "question" }, // La mattina di Natale
-  { id: 2, content: "La mattina di Natale", type: "answer" },
-  { id: 3, content: "👵 + 🧹", type: "question" }, // La Befana
-  { id: 4, content: "La Befana", type: "answer" },
-  { id: 5, content: "🎆 + 🎇", type: "question" }, // Capodanno
-  { id: 6, content: "Capodanno", type: "answer" },
-  { id: 7, content: "Natale - Capodanno", type: "question" }, // 24
-  { id: 8, content: "24", type: "answer" }
+  { id: 1, image: "kersticoon.png" },
+  { id: 2, image: "kersticoon2.png" }
 ];
 
+let gameCards = [];
 let flippedCards = [];
 let matchedCards = [];
 
+// Bord maken
 function createBoard() {
   const board = document.getElementById("game-board");
-  const restartButton = document.getElementById("restart-btn");
-
   board.innerHTML = "";
-  restartButton.classList.add("hidden");
-  flippedCards = [];
-  matchedCards = [];
+  gameCards = [];
 
-  const shuffledCards = shuffle([...cards, ...cards]);
-  shuffledCards.forEach(card => createCard(board, card));
+  // Kaarten verdelen: 10 van elk icoon
+  for (let i = 0; i < 10; i++) {
+    gameCards.push({ id: i, image: cards[0].image });
+    gameCards.push({ id: i + 10, image: cards[1].image });
+  }
+
+  const shuffledCards = shuffle(gameCards);
+  shuffledCards.forEach((card, index) => createCard(board, card, index));
 }
 
-function createCard(board, card) {
+function createCard(board, card, index) {
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
+  cardElement.dataset.index = index;
 
   const inner = document.createElement("div");
   inner.classList.add("card-inner");
 
   const front = document.createElement("div");
   front.classList.add("card-front");
+  front.style.backgroundImage = `url(${card.image})`;
+
   const back = document.createElement("div");
   back.classList.add("card-back");
-  back.textContent = card.content;
+  back.textContent = "?";
 
   inner.appendChild(front);
   inner.appendChild(back);
   cardElement.appendChild(inner);
+  board.appendChild(cardElement);
 
   cardElement.addEventListener("click", () => flipCard(cardElement, card));
-  board.appendChild(cardElement);
 }
 
 function flipCard(cardElement, card) {
-  if (cardElement.classList.contains("flipped") || cardElement.classList.contains("matched") || flippedCards.length === 2) return;
+  if (cardElement.classList.contains("flipped") || flippedCards.length === 2) return;
 
   cardElement.classList.add("flipped");
   flippedCards.push({ cardElement, card });
@@ -60,7 +61,7 @@ function flipCard(cardElement, card) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (card1.card.id === card2.card.id) {
+  if (card1.card.image === card2.card.image) {
     card1.cardElement.classList.add("matched");
     card2.cardElement.classList.add("matched");
     matchedCards.push(card1, card2);
@@ -70,11 +71,6 @@ function checkMatch() {
   }
 
   flippedCards = [];
-
-  if (matchedCards.length === cards.length) {
-    document.getElementById("restart-btn").classList.remove("hidden");
-    alert("🎉 Complimenti! Hai trovato tutte le coppie! 🎉");
-  }
 }
 
 function shuffle(array) {
@@ -86,5 +82,4 @@ function shuffle(array) {
 }
 
 document.getElementById("restart-btn").addEventListener("click", createBoard);
-
 createBoard();
