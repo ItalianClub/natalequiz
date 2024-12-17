@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz delle Feste - Italian Club</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <img src="logo.png" alt="Italian Club Logo" class="logo">
+    <h1>🎄 Quiz delle Feste 🎆</h1>
+    <p>Rispondi ai rebus e ai calcoli delle feste italiane!</p>
+  </header>
+
+  <!-- Quiz-container -->
+  <main>
+    <div id="quiz-container">
+      <div id="question"></div>
+      <div id="options"></div>
+      <button id="next-btn" class="hidden">Prossima domanda</button>
+    </div>
+    <div id="score-container" class="hidden">
+      <h2>🎉 Complimenti! 🎉</h2>
+      <p id="score-text"></p>
+      <button onclick="restartQuiz()">Ricomincia</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>Buon divertimento con <strong>Italian Club</strong> 🎅</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
