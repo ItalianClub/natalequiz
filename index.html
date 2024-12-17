@@ -3,32 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz delle Feste - Italian Club</title>
+  <title>Memoria delle Feste - Italian Club</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Header -->
   <header>
     <img src="logo.png" alt="Italian Club Logo" class="logo">
-    <h1>🎄 Quiz delle Feste 🎆</h1>
-    <p>Rispondi ai rebus e ai calcoli delle feste italiane!</p>
+    <h1>🎄 Memoria delle Feste 🎆</h1>
+    <p>Trova le coppie corrette con i calcoli e risposte delle feste italiane!</p>
   </header>
 
-  <!-- Quiz Container -->
+  <!-- Speelbord -->
   <main>
-    <!-- Vragen en opties -->
-    <div id="quiz-container">
-      <div id="question"></div>
-      <div id="options"></div>
-      <button id="next-btn" class="hidden">Prossima domanda</button>
-    </div>
-
-    <!-- Score Container -->
-    <div id="score-container" class="hidden">
-      <h2>🎉 Complimenti! 🎉</h2>
-      <p id="score-text"></p>
-      <button onclick="restartQuiz()">Ricomincia</button>
-    </div>
+    <div id="game-board"></div>
   </main>
 
   <!-- Footer -->
@@ -36,7 +24,6 @@
     <p>Buon divertimento con <strong>Italian Club</strong> 🎅</p>
   </footer>
 
-  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
