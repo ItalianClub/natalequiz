@@ -58,39 +58,4 @@ function shuffle(array) {
   return array;
 }
 
-// Kaart omdraaien
-function flipCard(cardElement, card) {
-  if (cardElement.classList.contains("flipped") || flippedCards.length === 2) return;
-
-  cardElement.classList.add("flipped");
-  flippedCards.push({ cardElement, card });
-
-  if (flippedCards.length === 2) {
-    setTimeout(checkMatch, 1000);
-  }
-}
-
-// Controleer match
-function checkMatch() {
-  const [card1, card2] = flippedCards;
-
-  if (card1.card.id === card2.card.id && card1.card.type !== card2.card.type) {
-    matchedCards.push(card1, card2);
-  } else {
-    card1.cardElement.classList.remove("flipped");
-    card2.cardElement.classList.remove("flipped");
-  }
-
-  flippedCards = [];
-
-  if (matchedCards.length === cards.length) {
-    document.getElementById("restart-btn").classList.remove("hidden");
-    alert("🎉 Complimenti! Hai trovato tutte le coppie! 🎉");
-  }
-}
-
-// Herstarten
-document.getElementById("restart-btn").addEventListener("click", createBoard);
-
-// Start het spel
-createBoard();
+// Kaart omd
