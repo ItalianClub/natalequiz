@@ -28,9 +28,21 @@ function createBoard() {
   shuffledCards.forEach(card => {
     const cardElement = document.createElement("div");
     cardElement.classList.add("card");
-    cardElement.dataset.id = card.id;
-    cardElement.dataset.content = card.content;
-    cardElement.textContent = "?";
+
+    const cardInner = document.createElement("div");
+    cardInner.classList.add("card-inner");
+
+    const cardFront = document.createElement("div");
+    cardFront.classList.add("card-front");
+    cardFront.textContent = "?";
+
+    const cardBack = document.createElement("div");
+    cardBack.classList.add("card-back");
+    cardBack.textContent = card.content;
+
+    cardInner.appendChild(cardFront);
+    cardInner.appendChild(cardBack);
+    cardElement.appendChild(cardInner);
 
     cardElement.addEventListener("click", () => flipCard(cardElement, card));
     board.appendChild(cardElement);
@@ -51,7 +63,6 @@ function flipCard(cardElement, card) {
   if (cardElement.classList.contains("flipped") || flippedCards.length === 2) return;
 
   cardElement.classList.add("flipped");
-  cardElement.textContent = card.content;
   flippedCards.push({ cardElement, card });
 
   if (flippedCards.length === 2) {
@@ -65,16 +76,13 @@ function checkMatch() {
 
   if (card1.card.id === card2.card.id && card1.card.type !== card2.card.type) {
     matchedCards.push(card1, card2);
-    card1.cardElement.classList.add("hidden");
-    card2.cardElement.classList.add("hidden");
   } else {
     card1.cardElement.classList.remove("flipped");
     card2.cardElement.classList.remove("flipped");
-    card1.cardElement.textContent = "?";
-    card2.cardElement.textContent = "?";
   }
 
   flippedCards = [];
+
   if (matchedCards.length === cards.length) {
     document.getElementById("restart-btn").classList.remove("hidden");
     alert("🎉 Complimenti! Hai trovato tutte le coppie! 🎉");
