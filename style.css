@@ -7,15 +7,16 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #ebe5dc; /* Zachte beige achtergrond */
+  background-color: #ebe5dc;
   color: #4d4d4d;
   text-align: center;
+  margin: 0;
 }
 
 header {
   background-color: #e6ded0;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
@@ -24,61 +25,51 @@ header {
 }
 
 h1 {
-  font-family: 'Your-Italian-Script-Font', serif;
   color: #9c1925;
   font-size: 2.5em;
 }
 
-#quiz-container {
-  margin: 30px auto;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 600px;
-}
-
-#question {
-  font-size: 1.5em;
+p {
+  font-size: 1.2em;
   margin-bottom: 20px;
 }
 
-#options button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 1.2em;
-  color: #fff;
-  background-color: #9c1925;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 150px);
+  grid-gap: 15px;
+  justify-content: center;
+  margin: 30px auto;
 }
 
-#options button:hover {
-  background-color: #d43b3b;
-}
-
-#next-btn, #score-container button {
-  margin-top: 20px;
+.card {
   background-color: #e6ded0;
-  color: #9c1925;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  border: none;
-  border-radius: 5px;
+  border: 2px solid #9c1925;
+  border-radius: 10px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-#next-btn:hover, #score-container button:hover {
+.card.flipped {
   background-color: #9c1925;
-  color: #ffffff;
+  transform: rotateY(180deg);
+  color: #fff;
 }
 
 .hidden {
-  display: none;
+  visibility: hidden;
+}
+
+footer {
+  background-color: #9c1925;
+  color: #e6ded0;
+  padding: 10px 0;
 }
