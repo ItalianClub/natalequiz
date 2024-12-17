@@ -1,0 +1,84 @@
+/* Algemene reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #ebe5dc; /* Zachte beige achtergrond */
+  color: #4d4d4d;
+  text-align: center;
+}
+
+header {
+  background-color: #e6ded0;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-family: 'Your-Italian-Script-Font', serif;
+  color: #9c1925;
+  font-size: 2.5em;
+}
+
+#quiz-container {
+  margin: 30px auto;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+}
+
+#question {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+#options button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1.2em;
+  color: #fff;
+  background-color: #9c1925;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#options button:hover {
+  background-color: #d43b3b;
+}
+
+#next-btn, #score-container button {
+  margin-top: 20px;
+  background-color: #e6ded0;
+  color: #9c1925;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#next-btn:hover, #score-container button:hover {
+  background-color: #9c1925;
+  color: #ffffff;
+}
+
+.hidden {
+  display: none;
+}
