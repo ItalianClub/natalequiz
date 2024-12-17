@@ -14,50 +14,43 @@ body {
 
 /* Header */
 header {
-  background-color: #9c1925; /* Dieprood */
-  padding: 15px 10px;
-  color: #e6ded0;
-}
-
-.header-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #9c1925;
+  padding: 15px;
+  color: #ffffff;
 }
 
 .logo {
-  width: 100px;
+  width: 120px;
   margin-bottom: 10px;
 }
 
 h1 {
-  color: #ffffff;
   font-size: 2.5em;
 }
 
 p {
   font-size: 1.2em;
-  margin-bottom: 10px;
 }
 
 /* Speelbord */
 #game-board {
   display: grid;
-  grid-template-columns: repeat(5, 100px);
-  grid-gap: 10px;
+  grid-template-columns: repeat(4, 120px);
+  grid-gap: 15px;
   justify-content: center;
   margin: 30px auto;
 }
 
 .card {
   position: relative;
-  width: 100px;
-  height: 100px;
-  perspective: 1000px;
+  width: 120px;
+  height: 120px;
   cursor: pointer;
+  perspective: 1000px;
 }
 
 .card-inner {
+  position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
@@ -74,33 +67,29 @@ p {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border: 2px solid #9c1925;
   border-radius: 8px;
 }
 
 .card-front {
   background-color: #f7f3ef;
-  background-image: url('kersticoon.png');
-  background-size: 50%;
-  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
 }
 
 .card-back {
   background-color: #2a9d8f;
   color: #fff;
-  transform: rotateY(180deg);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.2em;
-  font-weight: bold;
+  font-size: 1em;
+  transform: rotateY(180deg);
 }
 
-/* Gematchte kaarten */
-.card.matched {
+/* Matches */
+.card.matched .card-inner {
+  transform: rotateY(180deg);
   pointer-events: none;
-  background-color: #4caf50;
 }
 
 #restart-btn {
@@ -117,6 +106,6 @@ p {
 footer {
   margin-top: 20px;
   background-color: #9c1925;
-  color: #e6ded0;
+  color: #ffffff;
   padding: 10px 0;
 }
