@@ -1,14 +1,14 @@
 const cardsData = [
-  { bg: "kersticon.png", content: "Santo Stefano - La Vigilia di Natale", type: "question" },
-  { bg: "kersticon2.png", content: "2", type: "answer" },
-  { bg: "kersticon.png", content: "🎄 + 🧦", type: "question" },
-  { bg: "kersticon2.png", content: "La mattina di Natale", type: "answer" },
-  { bg: "kersticon.png", content: "👵 + 🧹", type: "question" },
-  { bg: "kersticon2.png", content: "La Befana", type: "answer" },
-  { bg: "kersticon.png", content: "Santo Stefano + La Befana", type: "question" },
-  { bg: "kersticon2.png", content: "32", type: "answer" },
-  { bg: "kersticon.png", content: "Natale - Capodanno", type: "question" },
-  { bg: "kersticon2.png", content: "24", type: "answer" },
+  { id: 1, bg: "kersticon.png", content: "Santo Stefano - La Vigilia di Natale", type: "question" },
+  { id: 2, bg: "kersticon.png", content: "2", type: "answer" },
+  { id: 3, bg: "kersticon.png", content: "🎄 + 🧦", type: "question" },
+  { id: 4, bg: "kersticon.png", content: "La mattina di Natale", type: "answer" },
+  { id: 5, bg: "kersticon.png", content: "👵 + 🧹", type: "question" },
+  { id: 6, bg: "kersticon2.png", content: "La Befana", type: "answer" },
+  { id: 7, bg: "kersticon2.png", content: "Santo Stefano + La Befana", type: "question" },
+  { id: 8, bg: "kersticon2.png", content: "32", type: "answer" },
+  { id: 9, bg: "kersticon2.png", content: "Natale - Capodanno", type: "question" },
+  { id: 10, bg: "kersticon2.png", content: "24", type: "answer" },
 ];
 
 let flippedCards = [];
@@ -68,11 +68,7 @@ function flipCard(card, cardData) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (
-    card1.cardData.type === "question" &&
-    card2.cardData.type === "answer" &&
-    cardsData.some((pair) => pair.content === card1.cardData.content && pair.content === card2.cardData.content)
-  ) {
+  if (card1.cardData.type === "question" && card2.cardData.type === "answer") {
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
     matchedCards.push(card1, card2);
@@ -85,7 +81,7 @@ function checkMatch() {
   flippedCards = [];
 
   if (matchedCards.length === cardsData.length) {
-    displayWinMessage();
+    alert("🎉 Complimenti! Alle paren gevonden!");
     restartBtn.style.display = "block";
   }
 }
@@ -93,10 +89,6 @@ function checkMatch() {
 function updateProgressBar() {
   const progress = (matchedCards.length / cardsData.length) * 100;
   progressBar.style.width = `${progress}%`;
-}
-
-function displayWinMessage() {
-  alert("🎉 Complimenti! Alle paren gevonden!");
 }
 
 restartBtn.addEventListener("click", () => {
