@@ -15,7 +15,6 @@ let flippedCards = [];
 let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
 const restartBtn = document.getElementById("restart-btn");
-const progressBar = document.getElementById("progress-bar");
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -27,14 +26,13 @@ function shuffle(array) {
 
 function setupGame() {
   const cards = shuffle(
-    pairs.flatMap((pair, index) => [
-      { type: "question", content: pair.question, bg: index % 2 === 0 ? "./kersticon.png" : "./kersticon2.png" },
-      { type: "answer", content: pair.answer, bg: index % 2 === 0 ? "./kersticon2.png" : "./kersticon.png" }
+    pairs.flatMap((pair) => [
+      { type: "question", content: pair.question, bg: "./kersticon.png" },
+      { type: "answer", content: pair.answer, bg: "./kersticon2.png" }
     ])
   );
 
   gameBoard.innerHTML = "";
-  progressBar.innerHTML = `<div></div>`;
   flippedCards = [];
   matchedCards = [];
 
@@ -61,12 +59,12 @@ function createCard(cardData) {
 }
 
 function flipCard(card, cardData) {
-  if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+  if (flippedCards.length < 2 && !card.classList.contains("flipped") && !card.classList.contains("matched")) {
     card.classList.add("flipped");
     flippedCards.push({ card, cardData });
 
     if (flippedCards.length === 2) {
-      setTimeout(checkMatch, 1000);
+      setTimeout(checkMatch, 800);
     }
   }
 }
@@ -76,31 +74,4 @@ function checkMatch() {
 
   if (
     (card1.cardData.type === "question" && card2.cardData.type === "answer" &&
-      pairs.some((pair) => pair.question === card1.cardData.content && pair.answer === card2.cardData.content)) ||
-    (card2.cardData.type === "question" && card1.cardData.type === "answer" &&
-      pairs.some((pair) => pair.question === card2.cardData.content && pair.answer === card1.cardData.content))
-  ) {
-    card1.card.classList.add("matched");
-    card2.card.classList.add("matched");
-    matchedCards.push(card1, card2);
-
-    updateProgressBar();
-  } else {
-    card1.card.classList.remove("flipped");
-    card2.card.classList.remove("flipped");
-  }
-
-  flippedCards = [];
-}
-
-function updateProgressBar() {
-  const progress = (matchedCards.length / (pairs.length * 2)) * 100;
-  progressBar.firstElementChild.style.width = `${progress}%`;
-}
-
-restartBtn.addEventListener("click", () => {
-  restartBtn.style.display = "none";
-  setupGame();
-});
-
-setupGame();
+      pairs.some((pair
