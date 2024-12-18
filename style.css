@@ -51,10 +51,10 @@ header {
 /* Spelbord */
 #game-board {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* 4 kolommen */
   gap: 15px;
   margin: 20px auto;
-  max-width: 600px;
+  max-width: 800px; /* Breder bord voor desktop */
   padding: 10px;
 }
 
@@ -110,12 +110,6 @@ header {
   border-radius: 10px;
 }
 
-/* Hover-effect voor kaarten */
-.card:hover {
-  transform: scale(1.05); /* Vergroot lichtjes bij hover */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
 /* Herstartknop styling */
 #restart-btn {
   margin-top: 20px;
@@ -141,8 +135,8 @@ footer {
 
 /* Responsieve aanpassingen */
 @media (max-width: 768px) {
-  .title {
-    font-size: clamp(1.5rem, 5vw, 2rem);
+  #game-board {
+    grid-template-columns: repeat(2, 1fr); /* 2 kolommen op mobiel */
   }
 
   #progress-bar {
