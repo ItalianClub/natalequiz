@@ -22,28 +22,19 @@ const cardsData = [
 ];
 
 let flippedCards = [];
-let matchedCards = [];
-const gameBoard = document.getElementById("game-board");
-const progressBar = document.getElementById("progress");
-const restartBtn = document.getElementById("restart-btn");
+let matchedPairs = 0;
 let boardLocked = false;
 
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
 function setupGame() {
-  const cards = shuffle([...cardsData]);
+  const shuffledCards = shuffle([...cardsData]);
+  const gameBoard = document.getElementById("game-board");
   gameBoard.innerHTML = "";
-  progressBar.style.width = "0%";
+  document.getElementById("progress").style.width = "0%";
   flippedCards = [];
-  matchedCards = [];
+  matchedPairs = 0;
   boardLocked = false;
-  cards.forEach(createCard);
+
+  shuffledCards.forEach(createCard);
 }
 
 function createCard(cardData) {
@@ -60,15 +51,17 @@ function createCard(cardData) {
 
   card.appendChild(front);
   card.appendChild(back);
-  gameBoard.appendChild(card);
+  document.getElementById("game-board").appendChild(card);
 
   card.addEventListener("click", () => flipCard(card, cardData));
 }
 
 function flipCard(card, cardData) {
   if (boardLocked || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+
   card.classList.add("flipped");
   flippedCards.push({ card, cardData });
+
   if (flippedCards.length === 2) {
     boardLocked = true;
     setTimeout(checkMatch, 800);
@@ -77,29 +70,45 @@ function flipCard(card, cardData) {
 
 function checkMatch() {
   const [card1, card2] = flippedCards;
+
   if (card1.cardData.pairId === card2.cardData.pairId) {
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
-    matchedCards.push(card1, card2);
+    matchedPairs++;
     updateProgressBar();
   } else {
     card1.card.classList.remove("flipped");
     card2.card.classList.remove("flipped");
   }
+
   flippedCards = [];
   boardLocked = false;
 
-  if (matchedCards.length === cardsData.length / 2) {
-    alert("🎉 Alle paren gevonden!");
-    restartBtn.style.display = "block";
+  if (matchedPairs === cardsData.length / 2) {
+    endGame();
   }
 }
 
 function updateProgressBar() {
-  const progress = (matchedCards.length / (cardsData.length / 2)) * 100;
-  progressBar.style.width = `${progress}%`;
+  const progress = (matchedPairs / (cardsData.length / 2)) * 100;
+  document.getElementById("progress").style.width = `${progress}%`;
 }
 
-restartBtn.addEventListener("click", setupGame);
+function endGame() {
+  document.getElementById("end-screen").style.display = "block";
+}
+
+document.getElementById("restart-btn-end").addEventListener("click", () => {
+  document.getElementById("end-screen").style.display = "none";
+  setupGame();
+});
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 
 setupGame();
