@@ -88,9 +88,16 @@ function checkMatch() {
     // Correcte match: markeer als "matched"
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
+
+    // Visuele feedback voor correcte match
+    card1.card.querySelector(".back").style.backgroundColor = "#e6ded0";
+    card2.card.querySelector(".back").style.backgroundColor = "#e6ded0";
+    card1.card.style.transition = "transform 0.3s ease, background-color 0.3s ease";
+    card2.card.style.transition = "transform 0.3s ease, background-color 0.3s ease";
+
     matchedCards.push(card1, card2);
 
-    // Update de voortgangsbalk
+    // Update voortgang
     updateProgressBar();
   } else {
     // Geen match: draai kaarten terug
@@ -98,7 +105,6 @@ function checkMatch() {
     card2.card.classList.remove("flipped");
   }
 
-  // Reset flippedCards
   flippedCards = [];
 
   // Controleer of alle kaarten gematcht zijn
@@ -113,6 +119,7 @@ function checkMatch() {
 // Voortgangsbalk bijwerken
 function updateProgressBar() {
   const progress = (matchedCards.length / (cardsData.length / 2)) * 100;
+  progressBar.style.transition = "width 0.5s ease";
   progressBar.style.width = `${progress}%`;
 }
 
