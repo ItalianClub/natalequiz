@@ -1,23 +1,3 @@
-// Data voor de kaarten
-const cardsData = [
-  { id: 1, bg: "kersticon.png", content: "Santo Stefano - La Vigilia di Natale", type: "question" },
-  { id: 2, bg: "kersticon.png", content: "2", type: "answer" },
-  { id: 3, bg: "kersticon.png", content: "🎄 + 🧦", type: "question" },
-  { id: 4, bg: "kersticon.png", content: "La mattina di Natale", type: "answer" },
-  { id: 5, bg: "kersticon.png", content: "👵 + 🧹", type: "question" },
-  { id: 6, bg: "kersticon.png", content: "La Befana", type: "answer" },
-  { id: 7, bg: "kersticon2.png", content: "Santo Stefano + La Befana", type: "question" },
-  { id: 8, bg: "kersticon2.png", content: "32", type: "answer" },
-  { id: 9, bg: "kersticon2.png", content: "Natale - Capodanno", type: "question" },
-  { id: 10, bg: "kersticon2.png", content: "24", type: "answer" },
-  { id: 11, bg: "kersticon2.png", content: "Compleanno del vostro insegnante", type: "question" },
-  { id: 12, bg: "kersticon2.png", content: "3 di gennaio", type: "answer" },
-  { id: 13, bg: "kersticon2.png", content: "🎅 + 🎁", type: "question" },
-  { id: 14, bg: "kersticon2.png", content: "Babbo Natale", type: "answer" },
-  { id: 15, bg: "kersticon2.png", content: "🎆 + 🥂", type: "question" },
-  { id: 16, bg: "kersticon2.png", content: "Capodanno", type: "answer" },
-];
-
 // Variabelen voor spelstatus
 let flippedCards = [];
 let matchedCards = [];
@@ -36,7 +16,7 @@ function shuffle(array) {
 
 // Spel initialiseren
 function setupGame() {
-  const cards = shuffle([...cardsData, ...cardsData]); // Verdubbel de kaarten
+  const cards = shuffle([...cardsData]); // Geen duplicatie, 16 unieke kaarten
   gameBoard.innerHTML = "";
   progressBar.style.width = "0%";
   flippedCards = [];
@@ -80,6 +60,7 @@ function flipCard(card, cardData) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
+  // Controleer of de kaarten matchen op basis van type en content
   if (
     card1.cardData.type === "question" &&
     card2.cardData.type === "answer" &&
@@ -89,12 +70,7 @@ function checkMatch() {
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
 
-    // Visuele feedback voor correcte match
-    card1.card.querySelector(".back").style.backgroundColor = "#e6ded0";
-    card2.card.querySelector(".back").style.backgroundColor = "#e6ded0";
-    card1.card.style.transition = "transform 0.3s ease, background-color 0.3s ease";
-    card2.card.style.transition = "transform 0.3s ease, background-color 0.3s ease";
-
+    // Voeg kaarten toe aan de lijst met gematchte kaarten
     matchedCards.push(card1, card2);
 
     // Update voortgang
@@ -108,7 +84,7 @@ function checkMatch() {
   flippedCards = [];
 
   // Controleer of alle kaarten gematcht zijn
-  if (matchedCards.length === cardsData.length) {
+  if (matchedCards.length === cardsData.length / 2) {
     setTimeout(() => {
       alert("🎉 Complimenti! Alle paren gevonden!");
       restartBtn.style.display = "block";
