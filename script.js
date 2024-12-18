@@ -1,12 +1,8 @@
 const cardsData = [
-  { id: 1, image: "kersticon.png" },
-  { id: 2, image: "kersticon2.png" },
-  { id: 3, image: "kersticon.png" },
-  { id: 4, image: "kersticon2.png" },
-  { id: 5, image: "kersticon.png" },
-  { id: 6, image: "kersticon2.png" },
-  { id: 7, image: "kersticon.png" },
-  { id: 8, image: "kersticon2.png" }
+  { id: 1, content: "3 di gennaio", image: "kersticon.png" },
+  { id: 2, content: "Compleanno del vostro insegnante", image: "kersticon2.png" },
+  { id: 3, content: "🎄 + 🎁", image: "kersticon.png" },
+  { id: 4, content: "Albero e Regali", image: "kersticon2.png" }
 ];
 
 let cards = [];
@@ -24,31 +20,34 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  cards = shuffle([...cardsData, ...cardsData]); // Dubbele kaarten
+  cards = shuffle([...cardsData, ...cardsData]); // Verdubbel de kaarten
   gameBoard.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
+  cards.forEach((card) => createCard(card));
+}
 
-  cards.forEach((card) => {
-    const cardElement = document.createElement("div");
-    cardElement.classList.add("card");
+function createCard(card) {
+  const cardElement = document.createElement("div");
+  cardElement.classList.add("card");
+  cardElement.dataset.content = card.content;
 
-    const frontFace = document.createElement("div");
-    frontFace.classList.add("front");
-    frontFace.style.backgroundColor = "#9c1925";
+  // Front en Back van de kaart
+  const frontFace = document.createElement("div");
+  frontFace.classList.add("front");
+  frontFace.textContent = "🎄";
 
-    const backFace = document.createElement("div");
-    backFace.classList.add("back");
-    const img = document.createElement("img");
-    img.src = card.image;
-    backFace.appendChild(img);
+  const backFace = document.createElement("div");
+  backFace.classList.add("back");
+  const img = document.createElement("img");
+  img.src = card.image;
+  backFace.appendChild(img);
 
-    cardElement.appendChild(frontFace);
-    cardElement.appendChild(backFace);
+  cardElement.appendChild(frontFace);
+  cardElement.appendChild(backFace);
 
-    cardElement.addEventListener("click", () => flipCard(cardElement, card));
-    gameBoard.appendChild(cardElement);
-  });
+  cardElement.addEventListener("click", () => flipCard(cardElement));
+  gameBoard.appendChild(cardElement);
 }
 
 function flipCard(cardElement) {
@@ -68,13 +67,12 @@ function flipCard(cardElement) {
 
 function checkMatch() {
   const [card1, card2] = flippedCards;
-  const img1 = card1.querySelector("img").src;
-  const img2 = card2.querySelector("img").src;
 
-  if (img1 === img2) {
+  if (card1.dataset.content === card2.dataset.content) {
     card1.classList.add("matched");
     card2.classList.add("matched");
     matchedCards.push(card1, card2);
+
     if (matchedCards.length === cards.length) {
       alert("🎉 Complimenti! Hai trovato tutte le coppie!");
       restartBtn.style.display = "block";
@@ -83,7 +81,6 @@ function checkMatch() {
     card1.classList.remove("flipped");
     card2.classList.remove("flipped");
   }
-
   flippedCards = [];
 }
 
