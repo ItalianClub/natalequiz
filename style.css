@@ -3,47 +3,53 @@ body {
   background-color: #ebe5dc;
   color: #4a4a4a;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-header img.logo {
-  width: 100px;
-  margin: 10px auto;
+header {
+  text-align: center;
+}
+
+.logo {
+  width: 120px;
+  margin-top: 20px;
 }
 
 h1 {
   color: #9c1925;
+  margin-bottom: 10px;
 }
 
 #game-board {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 10px;
-  margin: 20px;
-  justify-content: center;
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 10px;
 }
 
 .card {
   position: relative;
   width: 100px;
   height: 100px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 8px;
-  cursor: pointer;
+  border-radius: 10px;
   transform-style: preserve-3d;
-  transition: transform 0.4s;
+  transition: transform 0.5s;
 }
 
 .card.flipped {
   transform: rotateY(180deg);
 }
 
-.card .front {
+.card .front,
+.card .back {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .card .front {
@@ -52,15 +58,33 @@ h1 {
 }
 
 .card .back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
+  transform: rotateY(180deg);
   background-color: #9c1925;
   color: white;
   display: flex;
-  align-items: center;
   justify-content: center;
-  transform: rotateY(180deg);
-  border-radius: 8px;
+  align-items: center;
+  font-size: 14px;
+  text-align: center;
+  padding: 5px;
+}
+
+.card.matched {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+#restart-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #9c1925;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+footer {
+  margin-top: 20px;
+  color: #9c1925;
 }
