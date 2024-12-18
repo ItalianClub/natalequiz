@@ -1,8 +1,12 @@
 const cardsData = [
-  { id: 1, content: "🎄 + 🎁" }, { id: 2, content: "Albero e Regali" },
-  { id: 3, content: "🎅 + 🛷" }, { id: 4, content: "Babbo Natale" },
-  { id: 5, content: "🎆 + 🎉" }, { id: 6, content: "Capodanno" },
-  { id: 7, content: "👵 + 🧹" }, { id: 8, content: "La Befana" }
+  { id: 1, image: "kersticon.png" },
+  { id: 2, image: "kersticon2.png" },
+  { id: 3, image: "kersticon.png" },
+  { id: 4, image: "kersticon2.png" },
+  { id: 5, image: "kersticon.png" },
+  { id: 6, image: "kersticon2.png" },
+  { id: 7, image: "kersticon.png" },
+  { id: 8, image: "kersticon2.png" }
 ];
 
 let cards = [];
@@ -11,7 +15,6 @@ let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
 const restartBtn = document.getElementById("restart-btn");
 
-// Functie om kaarten te schudden
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -20,30 +23,41 @@ function shuffle(array) {
   return array;
 }
 
-// Spel instellen
 function setupGame() {
-  cards = shuffle([...cardsData, ...cardsData]); // Maak dubbele kaarten
+  cards = shuffle([...cardsData, ...cardsData]); // Dubbele kaarten
   gameBoard.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
-  cards.forEach(card => createCard(card));
+
+  cards.forEach((card) => {
+    const cardElement = document.createElement("div");
+    cardElement.classList.add("card");
+
+    const frontFace = document.createElement("div");
+    frontFace.classList.add("front");
+    frontFace.style.backgroundColor = "#9c1925";
+
+    const backFace = document.createElement("div");
+    backFace.classList.add("back");
+    const img = document.createElement("img");
+    img.src = card.image;
+    backFace.appendChild(img);
+
+    cardElement.appendChild(frontFace);
+    cardElement.appendChild(backFace);
+
+    cardElement.addEventListener("click", () => flipCard(cardElement, card));
+    gameBoard.appendChild(cardElement);
+  });
 }
 
-// Kaart maken
-function createCard(card) {
-  const cardElement = document.createElement("div");
-  cardElement.classList.add("card");
-  cardElement.dataset.content = card.content;
-
-  cardElement.addEventListener("click", () => flipCard(cardElement));
-  gameBoard.appendChild(cardElement);
-}
-
-// Kaart omdraaien
 function flipCard(cardElement) {
-  if (flippedCards.length < 2 && !cardElement.classList.contains("flipped")) {
+  if (
+    flippedCards.length < 2 &&
+    !cardElement.classList.contains("flipped") &&
+    !cardElement.classList.contains("matched")
+  ) {
     cardElement.classList.add("flipped");
-    cardElement.textContent = cardElement.dataset.content;
     flippedCards.push(cardElement);
 
     if (flippedCards.length === 2) {
@@ -52,11 +66,12 @@ function flipCard(cardElement) {
   }
 }
 
-// Controleren op een match
 function checkMatch() {
   const [card1, card2] = flippedCards;
+  const img1 = card1.querySelector("img").src;
+  const img2 = card2.querySelector("img").src;
 
-  if (card1.dataset.content === card2.dataset.content) {
+  if (img1 === img2) {
     card1.classList.add("matched");
     card2.classList.add("matched");
     matchedCards.push(card1, card2);
@@ -67,13 +82,11 @@ function checkMatch() {
   } else {
     card1.classList.remove("flipped");
     card2.classList.remove("flipped");
-    card1.textContent = "";
-    card2.textContent = "";
   }
+
   flippedCards = [];
 }
 
-// Herstart knop
 restartBtn.addEventListener("click", () => {
   restartBtn.style.display = "none";
   setupGame();
