@@ -36,7 +36,7 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  const cards = shuffle([...cardsData]); // Verdubbel kaarten.
+  const cards = shuffle([...cardsData]);
   gameBoard.innerHTML = "";
   progressBar.style.width = "0%";
   flippedCards = [];
@@ -94,8 +94,10 @@ function checkMatch() {
   flippedCards = [];
 
   if (matchedCards.length === cardsData.length) {
-    alert("🎉 Complimenti! Alle paren gevonden!");
-    restartBtn.style.display = "block";
+    setTimeout(() => {
+      alert("🎉 Complimenti! Alle paren gevonden!");
+      restartBtn.style.display = "block";
+    }, 300);
   }
 }
 
