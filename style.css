@@ -1,112 +1,79 @@
-/* Algemene reset */
-* {
+/* Algemene stijl */
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  background-color: #ebe5dc; /* Achtergrondkleur huisstijl */
+  color: #4a4a4a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #e6ded0;
-  color: #4d4d4d;
-  text-align: center;
-  overflow-x: hidden;
-}
-
-/* Header */
 header {
-  background-color: #9c1925;
-  padding: 15px;
-  color: #ffffff;
+  text-align: center;
+  margin: 20px;
 }
 
 .logo {
-  width: 80px;
+  width: 150px;
   margin-bottom: 10px;
 }
 
 h1 {
-  font-size: 1.8em;
+  color: #9c1925; /* Huisstijl accentkleur */
 }
 
-p {
-  font-size: 1em;
-}
-
-/* Speelbord */
 #game-board {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  max-width: 500px;
   margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
 }
 
 .card {
-  position: relative;
-  width: 100%;
-  height: 100px;
-  cursor: pointer;
-  perspective: 1000px;
-}
-
-.card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.6s;
-}
-
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
-}
-
-.card-front,
-.card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
+  background-color: #e6ded0; /* Tegelkleur huisstijl */
+  border: 2px solid #9c1925;
   border-radius: 8px;
-  background-size: cover;
-  background-position: center;
-}
-
-.card-front {
-  background-color: #9c1925;
-  background-image: url('kersticoon.png');
-}
-
-.card-back {
-  background-color: #2a9d8f;
-  color: #ffffff;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1em;
-  transform: rotateY(180deg);
+  font-size: 1.4rem;
+  color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
 
-.card.matched .card-inner {
-  transform: rotateY(180deg);
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card.flipped, .card.matched {
+  background-color: #9c1925; /* Geopende kaartkleur */
+  color: white;
   pointer-events: none;
 }
 
 #restart-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  color: #fff;
   background-color: #9c1925;
+  color: white;
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
 }
 
 footer {
   margin-top: 20px;
-  background-color: #9c1925;
-  color: #ffffff;
-  padding: 10px 0;
+  font-size: 1rem;
+  text-align: center;
+  color: #9c1925;
 }
