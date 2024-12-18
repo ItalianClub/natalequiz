@@ -95,7 +95,7 @@ function checkMatch() {
   flippedCards = [];
 
   if (matchedCards.length === cards.length / 2) {
-    alert("🎉 Complimenti! Hai trovato tutte le coppie!");
+    alert("🎉 Complimenti! Hai gevonden alle paren!");
     restartBtn.style.display = "block";
   }
 }
