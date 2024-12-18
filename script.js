@@ -1,30 +1,21 @@
-const cardsData = [
-  "Santo Stefano - La Vigilia di Natale",
-  "2",
-  "🎄 + 🧦",
-  "La mattina di Natale",
-  "👵 + 🧹",
-  "La Befana",
-  "Santo Stefano + La Befana",
-  "32",
-  "Natale - Capodanno",
-  "24",
-  "Compleanno del vostro insegnante",
-  "3 di gennaio",
-  "🎅 + 🎁",
-  "Babbo Natale",
-  "🎆 + 🥂",
-  "Capodanno",
-  "San Silvestro - Natale",
-  "6",
-  "🎄 + 🎆",
-  "Albero illuminato"
+const pairs = [
+  { question: "Santo Stefano - La Vigilia di Natale", answer: "2" },
+  { question: "🎄 + 🧦", answer: "La mattina di Natale" },
+  { question: "👵 + 🧹", answer: "La Befana" },
+  { question: "Santo Stefano + La Befana", answer: "32" },
+  { question: "Natale - Capodanno", answer: "24" },
+  { question: "Compleanno del vostro insegnante", answer: "3 di gennaio" },
+  { question: "🎅 + 🎁", answer: "Babbo Natale" },
+  { question: "🎆 + 🥂", answer: "Capodanno" },
+  { question: "San Silvestro - Natale", answer: "6" },
+  { question: "🎄 + 🎆", answer: "Albero illuminato" }
 ];
 
 let flippedCards = [];
 let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
 const restartBtn = document.getElementById("restart-btn");
+const progressBar = document.getElementById("progress-bar");
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -35,35 +26,44 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  const cards = shuffle([...cardsData, ...cardsData]);
+  const cards = shuffle(
+    pairs.flatMap((pair) => [
+      { type: "question", content: pair.question, bg: "./kersticon.png" },
+      { type: "answer", content: pair.answer, bg: "./kersticon2.png" }
+    ])
+  );
+
   gameBoard.innerHTML = "";
+  progressBar.innerHTML = `<div></div>`;
   flippedCards = [];
   matchedCards = [];
 
-  cards.forEach((content) => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-
-    const front = document.createElement("div");
-    front.classList.add("front");
-    front.textContent = "🎄";
-
-    const back = document.createElement("div");
-    back.classList.add("back");
-    back.textContent = content;
-
-    card.appendChild(front);
-    card.appendChild(back);
-
-    card.addEventListener("click", () => flipCard(card));
-    gameBoard.appendChild(card);
-  });
+  cards.forEach(createCard);
 }
 
-function flipCard(card) {
+function createCard(cardData) {
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  const front = document.createElement("div");
+  front.classList.add("front");
+  front.style.backgroundImage = `url(${cardData.bg})`;
+
+  const back = document.createElement("div");
+  back.classList.add("back");
+  back.textContent = cardData.content;
+
+  card.appendChild(front);
+  card.appendChild(back);
+
+  card.addEventListener("click", () => flipCard(card, cardData));
+  gameBoard.appendChild(card);
+}
+
+function flipCard(card, cardData) {
   if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
     card.classList.add("flipped");
-    flippedCards.push(card);
+    flippedCards.push({ card, cardData });
 
     if (flippedCards.length === 2) {
       setTimeout(checkMatch, 1000);
@@ -73,24 +73,34 @@ function flipCard(card) {
 
 function checkMatch() {
   const [card1, card2] = flippedCards;
-  const content1 = card1.querySelector(".back").textContent;
-  const content2 = card2.querySelector(".back").textContent;
 
-  if (content1 === content2) {
+  if (
+    (card1.cardData.type === "question" && card2.cardData.type === "answer" &&
+      pairs.some((pair) => pair.question === card1.cardData.content && pair.answer === card2.cardData.content)) ||
+    (card2.cardData.type === "question" && card1.cardData.type === "answer" &&
+      pairs.some((pair) => pair.question === card2.cardData.content && pair.answer === card1.cardData.content))
+  ) {
+    card1.card.classList.add("matched");
+    card2.card.classList.add("matched");
     matchedCards.push(card1, card2);
-    card1.removeEventListener("click", flipCard);
-    card2.removeEventListener("click", flipCard);
+
+    updateProgressBar();
   } else {
-    card1.classList.remove("flipped");
-    card2.classList.remove("flipped");
+    card1.card.classList.remove("flipped");
+    card2.card.classList.remove("flipped");
   }
 
   flippedCards = [];
 
-  if (matchedCards.length === cardsData.length * 2) {
+  if (matchedCards.length === pairs.length * 2) {
     alert("🎉 Complimenti! Je hebt alle paren gevonden!");
     restartBtn.style.display = "block";
   }
+}
+
+function updateProgressBar() {
+  const progress = (matchedCards.length / (pairs.length * 2)) * 100;
+  progressBar.firstElementChild.style.width = `${progress}%`;
 }
 
 restartBtn.addEventListener("click", () => {
