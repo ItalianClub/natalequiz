@@ -27,9 +27,9 @@ function shuffle(array) {
 
 function setupGame() {
   const cards = shuffle(
-    pairs.flatMap((pair) => [
-      { type: "question", content: pair.question, bg: "./kersticon.png" },
-      { type: "answer", content: pair.answer, bg: "./kersticon2.png" }
+    pairs.flatMap((pair, index) => [
+      { type: "question", content: pair.question, bg: index % 2 === 0 ? "./kersticon.png" : "./kersticon2.png" },
+      { type: "answer", content: pair.answer, bg: index % 2 === 0 ? "./kersticon2.png" : "./kersticon.png" }
     ])
   );
 
@@ -91,11 +91,6 @@ function checkMatch() {
   }
 
   flippedCards = [];
-
-  if (matchedCards.length === pairs.length * 2) {
-    alert("🎉 Complimenti! Je hebt alle paren gevonden!");
-    restartBtn.style.display = "block";
-  }
 }
 
 function updateProgressBar() {
