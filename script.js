@@ -85,7 +85,7 @@ function checkMatch() {
   flippedCards = [];
 
   if (matchedCards.length === cardsData.length) {
-    alert("🎉 Complimenti! Je hebt alle paren gevonden!");
+    displayWinMessage();
     restartBtn.style.display = "block";
   }
 }
@@ -93,6 +93,14 @@ function checkMatch() {
 function updateProgressBar() {
   const progress = (matchedCards.length / cardsData.length) * 100;
   progressBar.style.width = `${progress}%`;
+}
+
+function displayWinMessage() {
+  const confetti = document.createElement("div");
+  confetti.id = "confetti";
+  confetti.textContent = "🎉 Complimenti! Alle paren gevonden! 🎉";
+  document.body.appendChild(confetti);
+  setTimeout(() => document.body.removeChild(confetti), 3000);
 }
 
 restartBtn.addEventListener("click", () => {
