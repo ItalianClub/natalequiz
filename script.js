@@ -1,13 +1,20 @@
 const cardsData = [
-  { bg: "kersticon.png", content: "Vraag 1" },
-  { bg: "kersticon2.png", content: "Antwoord 1" },
-  { bg: "kersticon.png", content: "Vraag 2" },
-  { bg: "kersticon2.png", content: "Antwoord 2" }
+  { bg: "kersticon.png", content: "Santo Stefano - La Vigilia di Natale", type: "question" },
+  { bg: "kersticon2.png", content: "2", type: "answer" },
+  { bg: "kersticon.png", content: "🎄 + 🧦", type: "question" },
+  { bg: "kersticon2.png", content: "La mattina di Natale", type: "answer" },
+  { bg: "kersticon.png", content: "👵 + 🧹", type: "question" },
+  { bg: "kersticon2.png", content: "La Befana", type: "answer" },
+  { bg: "kersticon.png", content: "Santo Stefano + La Befana", type: "question" },
+  { bg: "kersticon2.png", content: "32", type: "answer" },
+  { bg: "kersticon.png", content: "Natale - Capodanno", type: "question" },
+  { bg: "kersticon2.png", content: "24", type: "answer" },
 ];
 
 let flippedCards = [];
 let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
+const progressBar = document.getElementById("progress");
 const restartBtn = document.getElementById("restart-btn");
 
 function shuffle(array) {
@@ -19,11 +26,12 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  console.log("Spel wordt ingesteld...");
   const cards = shuffle([...cardsData, ...cardsData]); // Verdubbel kaarten
   gameBoard.innerHTML = "";
+  progressBar.style.width = "0%";
   flippedCards = [];
   matchedCards = [];
+
   cards.forEach(createCard);
 }
 
@@ -60,11 +68,15 @@ function flipCard(card, cardData) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (card1.cardData.content === card2.cardData.content) {
-    console.log("Match gevonden!");
+  if (
+    card1.cardData.type === "question" &&
+    card2.cardData.type === "answer" &&
+    cardsData.some((pair) => pair.content === card1.cardData.content && pair.content === card2.cardData.content)
+  ) {
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
     matchedCards.push(card1, card2);
+    updateProgressBar();
   } else {
     card1.card.classList.remove("flipped");
     card2.card.classList.remove("flipped");
@@ -72,10 +84,15 @@ function checkMatch() {
 
   flippedCards = [];
 
-  if (matchedCards.length === cardsData.length * 2) {
+  if (matchedCards.length === cardsData.length) {
     alert("🎉 Complimenti! Je hebt alle paren gevonden!");
     restartBtn.style.display = "block";
   }
+}
+
+function updateProgressBar() {
+  const progress = (matchedCards.length / cardsData.length) * 100;
+  progressBar.style.width = `${progress}%`;
 }
 
 restartBtn.addEventListener("click", () => {
