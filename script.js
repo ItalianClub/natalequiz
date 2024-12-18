@@ -1,20 +1,12 @@
 const cardsData = [
-  { id: 1, content: "🎄 + 🎁", image: "kersticon1.png" },
-  { id: 2, content: "Albero e Regali", image: "kersticon2.png" },
-  { id: 3, content: "🎅 + 🛷", image: "kersticon3.png" },
-  { id: 4, content: "Babbo Natale", image: "kersticon4.png" },
-  { id: 5, content: "🎆 + 🎉", image: "kersticon5.png" },
-  { id: 6, content: "Capodanno", image: "kersticon6.png" },
-  { id: 7, content: "👵 + 🧹", image: "kersticon7.png" },
-  { id: 8, content: "La Befana", image: "kersticon8.png" },
-  { id: 9, content: "Santo Stefano + Natale", image: "kersticon9.png" },
-  { id: 10, content: "26 dicembre", image: "kersticon10.png" },
-  { id: 11, content: "Compleanno del vostro insegnante", image: "kersticon11.png" },
-  { id: 12, content: "3 di gennaio", image: "kersticon12.png" },
-  { id: 13, content: "Natale - Capodanno", image: "kersticon13.png" },
-  { id: 14, content: "24 dicembre", image: "kersticon14.png" },
-  { id: 15, content: "Regali di Natale", image: "kersticon15.png" },
-  { id: 16, content: "🎁", image: "kersticon16.png" }
+  { id: 1, image: "./kersticon1.png" },
+  { id: 2, image: "./kersticon2.png" },
+  { id: 3, image: "./kersticon1.png" },
+  { id: 4, image: "./kersticon2.png" },
+  { id: 5, image: "./kersticon1.png" },
+  { id: 6, image: "./kersticon2.png" },
+  { id: 7, image: "./kersticon1.png" },
+  { id: 8, image: "./kersticon2.png" }
 ];
 
 let cards = [];
@@ -32,19 +24,21 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  cards = shuffle([...cardsData, ...cardsData]);
+  cards = shuffle([...cardsData, ...cardsData]); // Maak dubbele kaarten
   gameBoard.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
-  cards.forEach(createCard);
+  cards.forEach((card, index) => createCard(card, index));
 }
 
-function createCard(card) {
+function createCard(card, index) {
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
+  cardElement.dataset.index = index;
 
   const frontFace = document.createElement("div");
   frontFace.classList.add("front");
+  frontFace.textContent = "🎄";
 
   const backFace = document.createElement("div");
   backFace.classList.add("back");
@@ -73,20 +67,24 @@ function flipCard(cardElement) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (card1.querySelector("img").src === card2.querySelector("img").src) {
-    card1.classList.add("matched");
-    card2.classList.add("matched");
-    matchedCards.push(card1, card2);
+  const img1 = card1.querySelector("img").src;
+  const img2 = card2.querySelector("img").src;
 
-    if (matchedCards.length === cards.length) {
-      alert("🎉 Complimenti! Hai trovato tutte le coppie!");
-      restartBtn.style.display = "block";
-    }
+  if (img1 === img2) {
+    matchedCards.push(card1, card2);
+    card1.removeEventListener("click", flipCard);
+    card2.removeEventListener("click", flipCard);
   } else {
     card1.classList.remove("flipped");
     card2.classList.remove("flipped");
   }
+
   flippedCards = [];
+
+  if (matchedCards.length === cards.length) {
+    alert("🎉 Complimenti! Je hebt alle paren gevonden!");
+    restartBtn.style.display = "block";
+  }
 }
 
 restartBtn.addEventListener("click", () => {
