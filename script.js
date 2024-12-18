@@ -21,13 +21,11 @@ const cardsData = [
   "Albero illuminato"
 ];
 
-let cards = [];
 let flippedCards = [];
 let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
 const restartBtn = document.getElementById("restart-btn");
 
-// Schud kaarten
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -36,75 +34,68 @@ function shuffle(array) {
   return array;
 }
 
-// Setup het spel
 function setupGame() {
-  cards = shuffle([...cardsData, ...cardsData]);
+  const cards = shuffle([...cardsData, ...cardsData]);
   gameBoard.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
-  cards.forEach(createCard);
+
+  cards.forEach((content) => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+
+    const front = document.createElement("div");
+    front.classList.add("front");
+    front.textContent = "🎄";
+
+    const back = document.createElement("div");
+    back.classList.add("back");
+    back.textContent = content;
+
+    card.appendChild(front);
+    card.appendChild(back);
+
+    card.addEventListener("click", () => flipCard(card));
+    gameBoard.appendChild(card);
+  });
 }
 
-// Maak kaarten
-function createCard(content) {
-  const cardElement = document.createElement("div");
-  cardElement.classList.add("card");
-
-  const frontFace = document.createElement("div");
-  frontFace.classList.add("front");
-  const img = document.createElement("img");
-  img.src = "./kersticon.png";
-  frontFace.appendChild(img);
-
-  const backFace = document.createElement("div");
-  backFace.classList.add("back");
-  backFace.textContent = content;
-
-  cardElement.appendChild(frontFace);
-  cardElement.appendChild(backFace);
-
-  cardElement.addEventListener("click", () => flipCard(cardElement, content));
-  gameBoard.appendChild(cardElement);
-}
-
-// Draai kaarten om
-function flipCard(cardElement, content) {
-  if (flippedCards.length < 2 && !cardElement.classList.contains("flipped")) {
-    cardElement.classList.add("flipped");
-    flippedCards.push({ cardElement, content });
+function flipCard(card) {
+  if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+    card.classList.add("flipped");
+    flippedCards.push(card);
 
     if (flippedCards.length === 2) {
-      setTimeout(checkMatch, 800);
+      setTimeout(checkMatch, 1000);
     }
   }
 }
 
-// Controleer op match
 function checkMatch() {
   const [card1, card2] = flippedCards;
+  const content1 = card1.querySelector(".back").textContent;
+  const content2 = card2.querySelector(".back").textContent;
 
-  if (card1.content === card2.content) {
-    card1.cardElement.classList.add("matched");
-    card2.cardElement.classList.add("matched");
+  if (content1 === content2) {
     matchedCards.push(card1, card2);
+    card1.removeEventListener("click", flipCard);
+    card2.removeEventListener("click", flipCard);
   } else {
-    card1.cardElement.classList.remove("flipped");
-    card2.cardElement.classList.remove("flipped");
+    card1.classList.remove("flipped");
+    card2.classList.remove("flipped");
   }
 
   flippedCards = [];
 
-  if (matchedCards.length === cards.length / 2) {
-    alert("🎉 Complimenti! Hai gevonden alle paren!");
+  if (matchedCards.length === cardsData.length * 2) {
+    alert("🎉 Complimenti! Je hebt alle paren gevonden!");
     restartBtn.style.display = "block";
   }
 }
 
-// Herstart het spel
 restartBtn.addEventListener("click", () => {
   restartBtn.style.display = "none";
   setupGame();
 });
 
-// Start het spel
 setupGame();
