@@ -4,11 +4,21 @@ const cardsData = [
   { id: 3, bg: "kersticon.png", content: "🎄 + 🧦", type: "question" },
   { id: 4, bg: "kersticon.png", content: "La mattina di Natale", type: "answer" },
   { id: 5, bg: "kersticon.png", content: "👵 + 🧹", type: "question" },
-  { id: 6, bg: "kersticon2.png", content: "La Befana", type: "answer" },
+  { id: 6, bg: "kersticon.png", content: "La Befana", type: "answer" },
   { id: 7, bg: "kersticon2.png", content: "Santo Stefano + La Befana", type: "question" },
   { id: 8, bg: "kersticon2.png", content: "32", type: "answer" },
   { id: 9, bg: "kersticon2.png", content: "Natale - Capodanno", type: "question" },
   { id: 10, bg: "kersticon2.png", content: "24", type: "answer" },
+  { id: 11, bg: "kersticon2.png", content: "Compleanno del vostro insegnante", type: "question" },
+  { id: 12, bg: "kersticon2.png", content: "3 di gennaio", type: "answer" },
+  { id: 13, bg: "kersticon2.png", content: "🎅 + 🎁", type: "question" },
+  { id: 14, bg: "kersticon2.png", content: "Babbo Natale", type: "answer" },
+  { id: 15, bg: "kersticon2.png", content: "🎆 + 🥂", type: "question" },
+  { id: 16, bg: "kersticon2.png", content: "Capodanno", type: "answer" },
+  { id: 17, bg: "kersticon2.png", content: "San Silvestro - Natale", type: "question" },
+  { id: 18, bg: "kersticon2.png", content: "6", type: "answer" },
+  { id: 19, bg: "kersticon2.png", content: "🎁 + 🎟️", type: "question" },
+  { id: 20, bg: "kersticon2.png", content: "La Tombola di Natale", type: "answer" },
 ];
 
 let flippedCards = [];
@@ -26,12 +36,11 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  const cards = shuffle([...cardsData, ...cardsData]);
+  const cards = shuffle([...cardsData]); // Verdubbel kaarten.
   gameBoard.innerHTML = "";
   progressBar.style.width = "0%";
   flippedCards = [];
   matchedCards = [];
-
   cards.forEach(createCard);
 }
 
@@ -68,7 +77,11 @@ function flipCard(card, cardData) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (card1.cardData.type === "question" && card2.cardData.type === "answer") {
+  if (
+    card1.cardData.type === "question" &&
+    card2.cardData.type === "answer" &&
+    cardsData.some((pair) => pair.content === card1.cardData.content && pair.content === card2.cardData.content)
+  ) {
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
     matchedCards.push(card1, card2);
@@ -87,7 +100,7 @@ function checkMatch() {
 }
 
 function updateProgressBar() {
-  const progress = (matchedCards.length / cardsData.length) * 100;
+  const progress = (matchedCards.length / (cardsData.length / 2)) * 100;
   progressBar.style.width = `${progress}%`;
 }
 
