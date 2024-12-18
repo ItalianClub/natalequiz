@@ -1,12 +1,14 @@
 const cardsData = [
-  { id: 1, question: "🎄 + 🎁", answer: "Albero e Regali" },
-  { id: 2, question: "🎅 + 🛷", answer: "Babbo Natale" },
-  { id: 3, question: "👵 + 🧹", answer: "La Befana" },
-  { id: 4, question: "5 + 3", answer: "8" },
-  { id: 5, question: "10 - 4", answer: "6" },
-  { id: 6, question: "7 + 2", answer: "9" },
-  { id: 7, question: "12 - 5", answer: "7" },
-  { id: 8, question: "Compleanno del vostro insegnante", answer: "3 di gennaio" }
+  { id: 1, content: "Santo Stefano - La Vigilia di Natale", answer: "2" },
+  { id: 2, content: "🎄 + 🧦", answer: "La mattina di Natale" },
+  { id: 3, content: "👵 + 🧹", answer: "La Befana" },
+  { id: 4, content: "Santo Stefano + La Befana", answer: "32" },
+  { id: 5, content: "Natale - Capodanno", answer: "24" },
+  { id: 6, content: "Compleanno del vostro insegnante", answer: "3 di gennaio" },
+  { id: 7, content: "🎅 + 🎁", answer: "Babbo Natale" },
+  { id: 8, content: "🎆 + 🥂", answer: "Capodanno" },
+  { id: 9, content: "San Silvestro - Natale", answer: "6" },
+  { id: 10, content: "🎄 + 🎆", answer: "Albero illuminato" }
 ];
 
 let cards = [];
@@ -15,6 +17,7 @@ let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
 const restartBtn = document.getElementById("restart-btn");
 
+// Schud kaarten
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -23,6 +26,7 @@ function shuffle(array) {
   return array;
 }
 
+// Setup het spel
 function setupGame() {
   cards = shuffle([
     ...cardsData.map(card => ({ ...card, type: "question" })),
@@ -34,17 +38,20 @@ function setupGame() {
   cards.forEach(createCard);
 }
 
+// Maak kaarten
 function createCard(card) {
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
 
   const frontFace = document.createElement("div");
   frontFace.classList.add("front");
-  frontFace.innerText = "🎄";
+  const img = document.createElement("img");
+  img.src = card.type === "question" ? "./kersticon.png" : "./kersticon2.png";
+  frontFace.appendChild(img);
 
   const backFace = document.createElement("div");
   backFace.classList.add("back");
-  backFace.innerText = card.type === "question" ? card.question : card.answer;
+  backFace.textContent = card.type === "question" ? card.content : card.answer;
 
   cardElement.appendChild(frontFace);
   cardElement.appendChild(backFace);
@@ -53,6 +60,7 @@ function createCard(card) {
   gameBoard.appendChild(cardElement);
 }
 
+// Draai kaarten om
 function flipCard(cardElement, card) {
   if (flippedCards.length < 2 && !cardElement.classList.contains("flipped")) {
     cardElement.classList.add("flipped");
@@ -64,12 +72,13 @@ function flipCard(cardElement, card) {
   }
 }
 
+// Controleer op match
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
   if (
-    (card1.card.type === "question" && card2.card.answer === card1.card.question) ||
-    (card2.card.type === "question" && card1.card.answer === card2.card.question)
+    (card1.card.type === "question" && card2.card.answer === card1.card.content) ||
+    (card2.card.type === "question" && card1.card.answer === card2.card.content)
   ) {
     card1.cardElement.classList.add("matched");
     card2.cardElement.classList.add("matched");
@@ -87,9 +96,11 @@ function checkMatch() {
   }
 }
 
+// Herstart het spel
 restartBtn.addEventListener("click", () => {
   restartBtn.style.display = "none";
   setupGame();
 });
 
+// Start het spel
 setupGame();
