@@ -26,7 +26,7 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  const cards = shuffle([...cardsData, ...cardsData]); // Verdubbel kaarten
+  const cards = shuffle([...cardsData, ...cardsData]);
   gameBoard.innerHTML = "";
   progressBar.style.width = "0%";
   flippedCards = [];
