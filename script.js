@@ -1,14 +1,13 @@
 const cardsData = [
-  { type: 'question', content: "Santo Stefano - La Vigilia di Natale", bg: "kersticon.png" },
-  { type: 'answer', content: "2", bg: "kersticon2.png" },
-  { type: 'question', content: "🎄 + 🧦", bg: "kersticon.png" },
-  { type: 'answer', content: "La mattina di Natale", bg: "kersticon2.png" }
+  { bg: "kersticon.png", content: "Vraag 1" },
+  { bg: "kersticon2.png", content: "Antwoord 1" },
+  { bg: "kersticon.png", content: "Vraag 2" },
+  { bg: "kersticon2.png", content: "Antwoord 2" }
 ];
 
 let flippedCards = [];
 let matchedCards = [];
-const gameBoard = document.getElementById('game-board');
-const restartBtn = document.getElementById('restart-btn');
+const gameBoard = document.getElementById("game-board");
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -19,39 +18,41 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  const cards = shuffle([...cardsData, ...cardsData]);
-  gameBoard.innerHTML = '';
+  console.log("Spel wordt ingesteld...");
+  const cards = shuffle([...cardsData, ...cardsData]); // Verdubbel kaarten
+  gameBoard.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
+
   cards.forEach(createCard);
 }
 
 function createCard(cardData) {
-  const card = document.createElement('div');
-  card.classList.add('card');
+  const card = document.createElement("div");
+  card.classList.add("card");
 
-  const front = document.createElement('div');
-  front.classList.add('front');
+  const front = document.createElement("div");
+  front.classList.add("front");
   front.style.backgroundImage = `url(${cardData.bg})`;
 
-  const back = document.createElement('div');
-  back.classList.add('back');
+  const back = document.createElement("div");
+  back.classList.add("back");
   back.textContent = cardData.content;
 
   card.appendChild(front);
   card.appendChild(back);
   gameBoard.appendChild(card);
 
-  card.addEventListener('click', () => flipCard(card, cardData));
+  card.addEventListener("click", () => flipCard(card, cardData));
 }
 
 function flipCard(card, cardData) {
-  if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
-    card.classList.add('flipped');
+  if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+    card.classList.add("flipped");
     flippedCards.push({ card, cardData });
 
     if (flippedCards.length === 2) {
-      setTimeout(checkMatch, 1000);
+      setTimeout(checkMatch, 800);
     }
   }
 }
@@ -60,12 +61,13 @@ function checkMatch() {
   const [card1, card2] = flippedCards;
 
   if (card1.cardData.content === card2.cardData.content) {
-    card1.card.classList.add('matched');
-    card2.card.classList.add('matched');
+    console.log("Match gevonden!");
+    card1.card.classList.add("matched");
+    card2.card.classList.add("matched");
     matchedCards.push(card1, card2);
   } else {
-    card1.card.classList.remove('flipped');
-    card2.card.classList.remove('flipped');
+    card1.card.classList.remove("flipped");
+    card2.card.classList.remove("flipped");
   }
 
   flippedCards = [];
