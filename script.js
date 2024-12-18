@@ -1,3 +1,4 @@
+// Data voor de kaarten
 const cardsData = [
   { id: 1, bg: "kersticon.png", content: "Santo Stefano - La Vigilia di Natale", type: "question" },
   { id: 2, bg: "kersticon.png", content: "2", type: "answer" },
@@ -15,18 +16,16 @@ const cardsData = [
   { id: 14, bg: "kersticon2.png", content: "Babbo Natale", type: "answer" },
   { id: 15, bg: "kersticon2.png", content: "🎆 + 🥂", type: "question" },
   { id: 16, bg: "kersticon2.png", content: "Capodanno", type: "answer" },
-  { id: 17, bg: "kersticon2.png", content: "San Silvestro - Natale", type: "question" },
-  { id: 18, bg: "kersticon2.png", content: "6", type: "answer" },
-  { id: 19, bg: "kersticon2.png", content: "🎁 + 🎟️", type: "question" },
-  { id: 20, bg: "kersticon2.png", content: "La Tombola di Natale", type: "answer" },
 ];
 
+// Variabelen voor spelstatus
 let flippedCards = [];
 let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
 const progressBar = document.getElementById("progress");
 const restartBtn = document.getElementById("restart-btn");
 
+// Functie om kaarten te schudden
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -35,8 +34,9 @@ function shuffle(array) {
   return array;
 }
 
+// Spel initialiseren
 function setupGame() {
-  const cards = shuffle([...cardsData]);
+  const cards = shuffle([...cardsData, ...cardsData]); // Verdubbel de kaarten
   gameBoard.innerHTML = "";
   progressBar.style.width = "0%";
   flippedCards = [];
@@ -44,6 +44,7 @@ function setupGame() {
   cards.forEach(createCard);
 }
 
+// Kaarten genereren
 function createCard(cardData) {
   const card = document.createElement("div");
   card.classList.add("card");
@@ -63,6 +64,7 @@ function createCard(cardData) {
   card.addEventListener("click", () => flipCard(card, cardData));
 }
 
+// Kaart omdraaien
 function flipCard(card, cardData) {
   if (flippedCards.length < 2 && !card.classList.contains("flipped") && !card.classList.contains("matched")) {
     card.classList.add("flipped");
@@ -74,25 +76,32 @@ function flipCard(card, cardData) {
   }
 }
 
+// Controleren op een match
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
   if (
     card1.cardData.type === "question" &&
     card2.cardData.type === "answer" &&
-    cardsData.some((pair) => pair.content === card1.cardData.content && pair.content === card2.cardData.content)
+    card1.cardData.content === card2.cardData.content
   ) {
+    // Correcte match: markeer als "matched"
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
     matchedCards.push(card1, card2);
+
+    // Update de voortgangsbalk
     updateProgressBar();
   } else {
+    // Geen match: draai kaarten terug
     card1.card.classList.remove("flipped");
     card2.card.classList.remove("flipped");
   }
 
+  // Reset flippedCards
   flippedCards = [];
 
+  // Controleer of alle kaarten gematcht zijn
   if (matchedCards.length === cardsData.length) {
     setTimeout(() => {
       alert("🎉 Complimenti! Alle paren gevonden!");
@@ -101,14 +110,17 @@ function checkMatch() {
   }
 }
 
+// Voortgangsbalk bijwerken
 function updateProgressBar() {
   const progress = (matchedCards.length / (cardsData.length / 2)) * 100;
   progressBar.style.width = `${progress}%`;
 }
 
+// Herstartknop functionaliteit
 restartBtn.addEventListener("click", () => {
   restartBtn.style.display = "none";
   setupGame();
 });
 
+// Start het spel
 setupGame();
