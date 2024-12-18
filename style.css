@@ -102,9 +102,9 @@ header {
   font-family: 'Montserrat', sans-serif;
 }
 
-.card.matched {
-  pointer-events: none;
-  opacity: 0.6;
+.card.matched .back {
+  background-color: #e6ded0;
+  color: #4a4a4a;
 }
 
 #restart-btn {
