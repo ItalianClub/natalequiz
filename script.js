@@ -1,3 +1,23 @@
+// Data voor de kaarten (10 unieke paren: vraag/antwoord)
+const cardsData = [
+  { id: 1, bg: "kersticon.png", content: "Santo Stefano - La Vigilia di Natale", type: "question" },
+  { id: 2, bg: "kersticon.png", content: "2", type: "answer" }, // MATCH
+  { id: 3, bg: "kersticon.png", content: "🎄 + 🧦", type: "question" },
+  { id: 4, bg: "kersticon.png", content: "La mattina di Natale", type: "answer" }, // MATCH
+  { id: 5, bg: "kersticon.png", content: "👵 + 🧹", type: "question" },
+  { id: 6, bg: "kersticon.png", content: "La Befana", type: "answer" }, // MATCH
+  { id: 7, bg: "kersticon2.png", content: "Santo Stefano + La Befana", type: "question" },
+  { id: 8, bg: "kersticon2.png", content: "32", type: "answer" }, // MATCH
+  { id: 9, bg: "kersticon2.png", content: "Natale - Capodanno", type: "question" },
+  { id: 10, bg: "kersticon2.png", content: "24", type: "answer" }, // MATCH
+  { id: 11, bg: "kersticon2.png", content: "Compleanno del vostro insegnante", type: "question" },
+  { id: 12, bg: "kersticon2.png", content: "3 di gennaio", type: "answer" }, // MATCH
+  { id: 13, bg: "kersticon2.png", content: "🎅 + 🎁", type: "question" },
+  { id: 14, bg: "kersticon2.png", content: "Babbo Natale", type: "answer" }, // MATCH
+  { id: 15, bg: "kersticon2.png", content: "🎆 + 🥂", type: "question" },
+  { id: 16, bg: "kersticon2.png", content: "Capodanno", type: "answer" }, // MATCH
+];
+
 // Variabelen voor spelstatus
 let flippedCards = [];
 let matchedCards = [];
@@ -16,7 +36,7 @@ function shuffle(array) {
 
 // Spel initialiseren
 function setupGame() {
-  const cards = shuffle([...cardsData]); // Geen duplicatie, 16 unieke kaarten
+  const cards = shuffle([...cardsData]); // Exact 20 unieke kaarten
   gameBoard.innerHTML = "";
   progressBar.style.width = "0%";
   flippedCards = [];
@@ -60,7 +80,6 @@ function flipCard(card, cardData) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  // Controleer of de kaarten matchen op basis van type en content
   if (
     card1.cardData.type === "question" &&
     card2.cardData.type === "answer" &&
