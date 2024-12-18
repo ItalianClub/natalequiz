@@ -49,15 +49,19 @@ function setupGame() {
 function createCard(cardData) {
   const card = document.createElement("div");
   card.classList.add("card");
+
   const front = document.createElement("div");
   front.classList.add("front");
   front.style.backgroundImage = `url(${cardData.bg})`;
+
   const back = document.createElement("div");
   back.classList.add("back");
   back.textContent = cardData.content;
+
   card.appendChild(front);
   card.appendChild(back);
   gameBoard.appendChild(card);
+
   card.addEventListener("click", () => flipCard(card, cardData));
 }
 
@@ -85,16 +89,10 @@ function checkMatch() {
   flippedCards = [];
   boardLocked = false;
 
-  // Controleer of de game echt voorbij is
-  if (matchedCards.length === cardsData.length / 2 && allCardsAreFlipped()) {
-    alert("🎉 Alle paren gevonden en alle kaarten zijn open!");
+  if (matchedCards.length === cardsData.length / 2) {
+    alert("🎉 Alle paren gevonden!");
     restartBtn.style.display = "block";
   }
-}
-
-function allCardsAreFlipped() {
-  const allCards = document.querySelectorAll(".card");
-  return Array.from(allCards).every(card => card.classList.contains("matched"));
 }
 
 function updateProgressBar() {
