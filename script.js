@@ -8,6 +8,7 @@ const cardsData = [
 let flippedCards = [];
 let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
+const restartBtn = document.getElementById("restart-btn");
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -23,7 +24,6 @@ function setupGame() {
   gameBoard.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
-
   cards.forEach(createCard);
 }
 
@@ -47,7 +47,7 @@ function createCard(cardData) {
 }
 
 function flipCard(card, cardData) {
-  if (flippedCards.length < 2 && !card.classList.contains("flipped")) {
+  if (flippedCards.length < 2 && !card.classList.contains("flipped") && !card.classList.contains("matched")) {
     card.classList.add("flipped");
     flippedCards.push({ card, cardData });
 
@@ -71,6 +71,16 @@ function checkMatch() {
   }
 
   flippedCards = [];
+
+  if (matchedCards.length === cardsData.length * 2) {
+    alert("🎉 Complimenti! Je hebt alle paren gevonden!");
+    restartBtn.style.display = "block";
+  }
 }
+
+restartBtn.addEventListener("click", () => {
+  restartBtn.style.display = "none";
+  setupGame();
+});
 
 setupGame();
