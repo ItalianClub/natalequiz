@@ -107,11 +107,6 @@ h1 {
   cursor: pointer;
 }
 
-footer {
-  margin-top: 20px;
-  color: #9c1925;
-}
-
 /* Confetti-styling */
 #confetti {
   position: fixed;
