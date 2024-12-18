@@ -75,6 +75,7 @@ function checkMatch() {
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
     matchedPairs++;
+    console.log(`Matched pairs: ${matchedPairs}`);
     updateProgressBar();
   } else {
     card1.card.classList.remove("flipped");
@@ -84,24 +85,19 @@ function checkMatch() {
   flippedCards = [];
   boardLocked = false;
 
-  if (matchedPairs === cardsData.length / 2) {
+  if (matchedPairs === 10) {
     endGame();
   }
 }
 
 function updateProgressBar() {
-  const progress = (matchedPairs / (cardsData.length / 2)) * 100;
+  const progress = (matchedPairs / 10) * 100;
   document.getElementById("progress").style.width = `${progress}%`;
 }
 
 function endGame() {
-  document.getElementById("end-screen").style.display = "block";
+  alert("🎉 Alle paren gevonden!");
 }
-
-document.getElementById("restart-btn-end").addEventListener("click", () => {
-  document.getElementById("end-screen").style.display = "none";
-  setupGame();
-});
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
