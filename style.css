@@ -62,7 +62,7 @@ header {
 .card {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1; /* Zorgt ervoor dat kaarten vierkant zijn */
   border-radius: 10px;
   transform-style: preserve-3d;
   transition: transform 0.5s ease, opacity 0.5s ease;
@@ -71,7 +71,7 @@ header {
 }
 
 .card.flipped {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg); /* Draaianimatie bij omdraaien */
 }
 
 .card.matched {
@@ -110,6 +110,13 @@ header {
   border-radius: 10px;
 }
 
+/* Hover-effect voor kaarten */
+.card:hover {
+  transform: scale(1.05); /* Vergroot lichtjes bij hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Herstartknop styling */
 #restart-btn {
   margin-top: 20px;
   padding: 10px 20px;
@@ -119,6 +126,7 @@ header {
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 #restart-btn:hover {
@@ -128,4 +136,16 @@ header {
 footer {
   margin-top: 20px;
   font-size: 0.9rem;
-  color: #
+  color: #9c1925;
+}
+
+/* Responsieve aanpassingen */
+@media (max-width: 768px) {
+  .title {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  #progress-bar {
+    height: 15px;
+  }
+}
