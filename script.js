@@ -26,6 +26,7 @@ let matchedCards = [];
 const gameBoard = document.getElementById("game-board");
 const progressBar = document.getElementById("progress");
 const restartBtn = document.getElementById("restart-btn");
+let boardLocked = false;
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -41,6 +42,7 @@ function setupGame() {
   progressBar.style.width = "0%";
   flippedCards = [];
   matchedCards = [];
+  boardLocked = false;
   cards.forEach(createCard);
 }
 
@@ -48,9 +50,9 @@ function createCard(cardData) {
   const card = document.createElement("div");
   card.classList.add("card");
   const front = document.createElement("div");
-  const back = document.createElement("div");
   front.classList.add("front");
   front.style.backgroundImage = `url(${cardData.bg})`;
+  const back = document.createElement("div");
   back.classList.add("back");
   back.textContent = cardData.content;
   card.appendChild(front);
@@ -60,10 +62,13 @@ function createCard(cardData) {
 }
 
 function flipCard(card, cardData) {
-  if (flippedCards.length >= 2 || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+  if (boardLocked || card.classList.contains("flipped") || card.classList.contains("matched")) return;
   card.classList.add("flipped");
   flippedCards.push({ card, cardData });
-  if (flippedCards.length === 2) setTimeout(checkMatch, 800);
+  if (flippedCards.length === 2) {
+    boardLocked = true;
+    setTimeout(checkMatch, 800);
+  }
 }
 
 function checkMatch() {
@@ -78,10 +83,18 @@ function checkMatch() {
     card2.card.classList.remove("flipped");
   }
   flippedCards = [];
-  if (matchedCards.length === cardsData.length / 2) {
-    alert("🎉 Alle paren gevonden!");
+  boardLocked = false;
+
+  // Controleer of de game echt voorbij is
+  if (matchedCards.length === cardsData.length / 2 && allCardsAreFlipped()) {
+    alert("🎉 Alle paren gevonden en alle kaarten zijn open!");
     restartBtn.style.display = "block";
   }
+}
+
+function allCardsAreFlipped() {
+  const allCards = document.querySelectorAll(".card");
+  return Array.from(allCards).every(card => card.classList.contains("matched"));
 }
 
 function updateProgressBar() {
@@ -89,9 +102,6 @@ function updateProgressBar() {
   progressBar.style.width = `${progress}%`;
 }
 
-restartBtn.addEventListener("click", () => {
-  restartBtn.style.display = "none";
-  setupGame();
-});
+restartBtn.addEventListener("click", setupGame);
 
 setupGame();
