@@ -1,20 +1,14 @@
-const pairs = [
-  { question: "Santo Stefano - La Vigilia di Natale", answer: "2" },
-  { question: "🎄 + 🧦", answer: "La mattina di Natale" },
-  { question: "👵 + 🧹", answer: "La Befana" },
-  { question: "Santo Stefano + La Befana", answer: "32" },
-  { question: "Natale - Capodanno", answer: "24" },
-  { question: "Compleanno del vostro insegnante", answer: "3 di gennaio" },
-  { question: "🎅 + 🎁", answer: "Babbo Natale" },
-  { question: "🎆 + 🥂", answer: "Capodanno" },
-  { question: "San Silvestro - Natale", answer: "6" },
-  { question: "🎄 + 🎆", answer: "Albero illuminato" }
+const cardsData = [
+  { type: 'question', content: "Santo Stefano - La Vigilia di Natale", bg: "kersticon.png" },
+  { type: 'answer', content: "2", bg: "kersticon2.png" },
+  { type: 'question', content: "🎄 + 🧦", bg: "kersticon.png" },
+  { type: 'answer', content: "La mattina di Natale", bg: "kersticon2.png" }
 ];
 
 let flippedCards = [];
 let matchedCards = [];
-const gameBoard = document.getElementById("game-board");
-const restartBtn = document.getElementById("restart-btn");
+const gameBoard = document.getElementById('game-board');
+const restartBtn = document.getElementById('restart-btn');
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -25,46 +19,39 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  const cards = shuffle(
-    pairs.flatMap((pair) => [
-      { type: "question", content: pair.question, bg: "./kersticon.png" },
-      { type: "answer", content: pair.answer, bg: "./kersticon2.png" }
-    ])
-  );
-
-  gameBoard.innerHTML = "";
+  const cards = shuffle([...cardsData, ...cardsData]);
+  gameBoard.innerHTML = '';
   flippedCards = [];
   matchedCards = [];
-
   cards.forEach(createCard);
 }
 
 function createCard(cardData) {
-  const card = document.createElement("div");
-  card.classList.add("card");
+  const card = document.createElement('div');
+  card.classList.add('card');
 
-  const front = document.createElement("div");
-  front.classList.add("front");
+  const front = document.createElement('div');
+  front.classList.add('front');
   front.style.backgroundImage = `url(${cardData.bg})`;
 
-  const back = document.createElement("div");
-  back.classList.add("back");
+  const back = document.createElement('div');
+  back.classList.add('back');
   back.textContent = cardData.content;
 
   card.appendChild(front);
   card.appendChild(back);
-
-  card.addEventListener("click", () => flipCard(card, cardData));
   gameBoard.appendChild(card);
+
+  card.addEventListener('click', () => flipCard(card, cardData));
 }
 
 function flipCard(card, cardData) {
-  if (flippedCards.length < 2 && !card.classList.contains("flipped") && !card.classList.contains("matched")) {
-    card.classList.add("flipped");
+  if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+    card.classList.add('flipped');
     flippedCards.push({ card, cardData });
 
     if (flippedCards.length === 2) {
-      setTimeout(checkMatch, 800);
+      setTimeout(checkMatch, 1000);
     }
   }
 }
@@ -72,6 +59,16 @@ function flipCard(card, cardData) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (
-    (card1.cardData.type === "question" && card2.cardData.type === "answer" &&
-      pairs.some((pair
+  if (card1.cardData.content === card2.cardData.content) {
+    card1.card.classList.add('matched');
+    card2.card.classList.add('matched');
+    matchedCards.push(card1, card2);
+  } else {
+    card1.card.classList.remove('flipped');
+    card2.card.classList.remove('flipped');
+  }
+
+  flippedCards = [];
+}
+
+setupGame();
