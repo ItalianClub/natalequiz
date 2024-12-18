@@ -1,12 +1,20 @@
 const cardsData = [
   { id: 1, content: "🎄 + 🎁", image: "kersticon1.png" },
   { id: 2, content: "Albero e Regali", image: "kersticon2.png" },
-  { id: 3, content: "🎅 + 🛷", image: "kersticon1.png" },
-  { id: 4, content: "Babbo Natale", image: "kersticon2.png" },
-  { id: 5, content: "🎆 + 🎉", image: "kersticon1.png" },
-  { id: 6, content: "Capodanno", image: "kersticon2.png" },
-  { id: 7, content: "👵 + 🧹", image: "kersticon1.png" },
-  { id: 8, content: "La Befana", image: "kersticon2.png" }
+  { id: 3, content: "🎅 + 🛷", image: "kersticon3.png" },
+  { id: 4, content: "Babbo Natale", image: "kersticon4.png" },
+  { id: 5, content: "🎆 + 🎉", image: "kersticon5.png" },
+  { id: 6, content: "Capodanno", image: "kersticon6.png" },
+  { id: 7, content: "👵 + 🧹", image: "kersticon7.png" },
+  { id: 8, content: "La Befana", image: "kersticon8.png" },
+  { id: 9, content: "Santo Stefano + Natale", image: "kersticon9.png" },
+  { id: 10, content: "26 dicembre", image: "kersticon10.png" },
+  { id: 11, content: "Compleanno del vostro insegnante", image: "kersticon11.png" },
+  { id: 12, content: "3 di gennaio", image: "kersticon12.png" },
+  { id: 13, content: "Natale - Capodanno", image: "kersticon13.png" },
+  { id: 14, content: "24 dicembre", image: "kersticon14.png" },
+  { id: 15, content: "Regali di Natale", image: "kersticon15.png" },
+  { id: 16, content: "🎁", image: "kersticon16.png" }
 ];
 
 let cards = [];
@@ -24,17 +32,16 @@ function shuffle(array) {
 }
 
 function setupGame() {
-  cards = shuffle([...cardsData, ...cardsData]); // Verdubbel de kaarten
+  cards = shuffle([...cardsData, ...cardsData]);
   gameBoard.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
-  cards.forEach((card) => createCard(card));
+  cards.forEach(createCard);
 }
 
 function createCard(card) {
   const cardElement = document.createElement("div");
   cardElement.classList.add("card");
-  cardElement.dataset.content = card.content;
 
   const frontFace = document.createElement("div");
   frontFace.classList.add("front");
@@ -53,11 +60,7 @@ function createCard(card) {
 }
 
 function flipCard(cardElement) {
-  if (
-    flippedCards.length < 2 &&
-    !cardElement.classList.contains("flipped") &&
-    !cardElement.classList.contains("matched")
-  ) {
+  if (flippedCards.length < 2 && !cardElement.classList.contains("flipped")) {
     cardElement.classList.add("flipped");
     flippedCards.push(cardElement);
 
@@ -70,7 +73,7 @@ function flipCard(cardElement) {
 function checkMatch() {
   const [card1, card2] = flippedCards;
 
-  if (card1.dataset.content === card2.dataset.content) {
+  if (card1.querySelector("img").src === card2.querySelector("img").src) {
     card1.classList.add("matched");
     card2.classList.add("matched");
     matchedCards.push(card1, card2);
