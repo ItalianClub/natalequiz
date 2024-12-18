@@ -96,11 +96,7 @@ function updateProgressBar() {
 }
 
 function displayWinMessage() {
-  const confetti = document.createElement("div");
-  confetti.id = "confetti";
-  confetti.textContent = "🎉 Complimenti! Alle paren gevonden! 🎉";
-  document.body.appendChild(confetti);
-  setTimeout(() => document.body.removeChild(confetti), 3000);
+  alert("🎉 Complimenti! Alle paren gevonden!");
 }
 
 restartBtn.addEventListener("click", () => {
