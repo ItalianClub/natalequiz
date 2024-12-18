@@ -56,23 +56,28 @@ h1 {
   backface-visibility: hidden;
 }
 
-.card .front {
-  background-color: #9c1925;
-}
-
-.card .back {
-  transform: rotateY(180deg);
-}
-
-.card img {
+.card .front img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+.card .back {
+  transform: rotateY(180deg);
+  background-color: #9c1925;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 .card.matched {
   pointer-events: none;
-  background-color: #9c1925;
+  background-color: #4caf50;
 }
 
 #restart-btn {
