@@ -1,8 +1,12 @@
 const cardsData = [
-  { id: 1, content: "3 di gennaio", image: "kersticon.png" },
-  { id: 2, content: "Compleanno del vostro insegnante", image: "kersticon2.png" },
-  { id: 3, content: "🎄 + 🎁", image: "kersticon.png" },
-  { id: 4, content: "Albero e Regali", image: "kersticon2.png" }
+  { id: 1, content: "🎄 + 🎁", image: "kersticon1.png" },
+  { id: 2, content: "Albero e Regali", image: "kersticon2.png" },
+  { id: 3, content: "🎅 + 🛷", image: "kersticon1.png" },
+  { id: 4, content: "Babbo Natale", image: "kersticon2.png" },
+  { id: 5, content: "🎆 + 🎉", image: "kersticon1.png" },
+  { id: 6, content: "Capodanno", image: "kersticon2.png" },
+  { id: 7, content: "👵 + 🧹", image: "kersticon1.png" },
+  { id: 8, content: "La Befana", image: "kersticon2.png" }
 ];
 
 let cards = [];
@@ -32,10 +36,8 @@ function createCard(card) {
   cardElement.classList.add("card");
   cardElement.dataset.content = card.content;
 
-  // Front en Back van de kaart
   const frontFace = document.createElement("div");
   frontFace.classList.add("front");
-  frontFace.textContent = "🎄";
 
   const backFace = document.createElement("div");
   backFace.classList.add("back");
