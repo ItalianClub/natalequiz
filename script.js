@@ -38,6 +38,7 @@ function shuffle(array) {
 function setupGame() {
   const cards = shuffle([...cardsData]);
   gameBoard.innerHTML = "";
+  progressBar.style.width = "0%";
   flippedCards = [];
   matchedCards = [];
   cards.forEach(createCard);
@@ -49,6 +50,7 @@ function createCard(cardData) {
   const front = document.createElement("div");
   const back = document.createElement("div");
   front.classList.add("front");
+  front.style.backgroundImage = `url(${cardData.bg})`;
   back.classList.add("back");
   back.textContent = cardData.content;
   card.appendChild(front);
@@ -58,10 +60,10 @@ function createCard(cardData) {
 }
 
 function flipCard(card, cardData) {
-  if (flippedCards.length >= 2) return;
+  if (flippedCards.length >= 2 || card.classList.contains("flipped") || card.classList.contains("matched")) return;
   card.classList.add("flipped");
   flippedCards.push({ card, cardData });
-  if (flippedCards.length === 2) checkMatch();
+  if (flippedCards.length === 2) setTimeout(checkMatch, 800);
 }
 
 function checkMatch() {
@@ -70,15 +72,26 @@ function checkMatch() {
     card1.card.classList.add("matched");
     card2.card.classList.add("matched");
     matchedCards.push(card1, card2);
+    updateProgressBar();
   } else {
-    setTimeout(() => {
-      card1.card.classList.remove("flipped");
-      card2.card.classList.remove("flipped");
-    }, 1000);
+    card1.card.classList.remove("flipped");
+    card2.card.classList.remove("flipped");
   }
   flippedCards = [];
+  if (matchedCards.length === cardsData.length / 2) {
+    alert("🎉 Alle paren gevonden!");
+    restartBtn.style.display = "block";
+  }
 }
 
-restartBtn.addEventListener("click", setupGame);
+function updateProgressBar() {
+  const progress = (matchedCards.length / (cardsData.length / 2)) * 100;
+  progressBar.style.width = `${progress}%`;
+}
+
+restartBtn.addEventListener("click", () => {
+  restartBtn.style.display = "none";
+  setupGame();
+});
 
 setupGame();
