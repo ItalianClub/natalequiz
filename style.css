@@ -44,14 +44,14 @@ header {
 #progress {
   height: 100%;
   width: 0;
-  background-color: #9c1925;
+  background: linear-gradient(90deg, #9c1925, #bf1520);
   transition: width 0.5s ease;
 }
 
 /* Spelbord */
 #game-board {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 kaarten per rij */
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 15px;
   margin: 20px auto;
   max-width: 600px;
@@ -105,20 +105,11 @@ header {
   align-items: center;
   text-align: center;
   padding: 5px;
-  font-size: clamp(0.8rem, 1.2vw, 1rem); /* Dynamische tekstgrootte */
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
   font-family: 'Montserrat', sans-serif;
-  line-height: 1.2;
   border-radius: 10px;
 }
 
-/* Geanimeerde achtergrondkleur voor correcte matches */
-.card.matched .back {
-  background-color: #e6ded0;
-  color: #4a4a4a;
-  transition: background-color 0.3s ease;
-}
-
-/* Herstartknop styling */
 #restart-btn {
   margin-top: 20px;
   padding: 10px 20px;
@@ -134,24 +125,7 @@ header {
   background-color: #bf1520;
 }
 
-/* Footer styling */
 footer {
   margin-top: 20px;
   font-size: 0.9rem;
-  color: #9c1925;
-}
-
-/* Responsieve aanpassingen */
-@media (max-width: 768px) {
-  .title {
-    font-size: clamp(1.5rem, 5vw, 2rem);
-  }
-
-  #game-board {
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  }
-
-  #progress-bar {
-    height: 15px;
-  }
-}
+  color: #
