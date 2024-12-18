@@ -1,23 +1,28 @@
 const cards = [
-  { id: 1, content: "🎄 + 🧦", image: "kersticoon.png" }, // La mattina di Natale
-  { id: 2, content: "La mattina di Natale", image: "kersticoon2.png" },
-  { id: 3, content: "👵 + 🧹", image: "kersticoon.png" }, // La Befana
-  { id: 4, content: "La Befana", image: "kersticoon2.png" },
-  { id: 5, content: "🎆 + 🎇", image: "kersticoon.png" }, // Capodanno
-  { id: 6, content: "Capodanno", image: "kersticoon2.png" }
+  { id: 1, content: "Santo Stefano - La Vigilia di Natale" },
+  { id: 2, content: "7" },
+  { id: 3, content: "🎄 + 🧦" },
+  { id: 4, content: "La mattina di Natale" },
+  { id: 5, content: "👵 + 🧹" },
+  { id: 6, content: "La Befana" },
+  { id: 7, content: "Santo Stefano + La Befana" },
+  { id: 8, content: "32" },
+  { id: 9, content: "Natale - Capodanno" },
+  { id: 10, content: "24" },
+  { id: 11, content: "Compleanno del vostro insegnante" },
+  { id: 12, content: "3" }
 ];
 
 let flippedCards = [];
 let matchedCards = [];
 
-// Bord maken
 function createBoard() {
   const board = document.getElementById("game-board");
   board.innerHTML = "";
   flippedCards = [];
   matchedCards = [];
 
-  const shuffledCards = shuffle([...cards, ...cards]); // Dubbele set kaarten
+  const shuffledCards = shuffle([...cards, ...cards]);
   shuffledCards.forEach(card => createCard(board, card));
 }
 
@@ -30,7 +35,6 @@ function createCard(board, card) {
 
   const front = document.createElement("div");
   front.classList.add("card-front");
-  front.style.backgroundImage = `url(${card.image})`;
 
   const back = document.createElement("div");
   back.classList.add("card-back");
@@ -59,7 +63,7 @@ function checkMatch() {
   const [card1, card2] = flippedCards;
 
   if (card1.card.content === card2.card.content) {
-    card1.cardElement.classList.add("matched");
+    ard1.cardElement.classList.add("matched");
     card2.cardElement.classList.add("matched");
     matchedCards.push(card1, card2);
   } else {
@@ -68,6 +72,11 @@ function checkMatch() {
   }
 
   flippedCards = [];
+
+  if (matchedCards.length === cards.length) {
+    alert("🎉 Complimenti! Hai trovato tutte le coppie! 🎉");
+    document.getElementById("restart-btn").classList.remove("hidden");
+  }
 }
 
 function shuffle(array) {
