@@ -1,3 +1,4 @@
+/* Algemene styling */
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: #ebe5dc;
@@ -25,9 +26,11 @@ header {
 
 .subtitle {
   font-size: 1rem;
+  color: #4a4a4a;
   margin-bottom: 20px;
 }
 
+/* Progressiebalk */
 #progress-bar {
   width: 90%;
   max-width: 600px;
@@ -45,12 +48,13 @@ header {
   transition: width 0.5s ease;
 }
 
+/* Spelbord */
 #game-board {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 4 kolommen */
   gap: 15px;
   margin: 20px auto;
-  max-width: 800px;
+  max-width: 800px; /* Breder bord voor desktop */
   padding: 10px;
 }
 
@@ -79,6 +83,7 @@ header {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  border-radius: 10px;
   background-size: cover;
   background-position: center;
   object-fit: cover;
